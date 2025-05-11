@@ -1,2339 +1,1159 @@
 <!doctype html>
-<html lang="en"> 
- <head> 
-  <meta charset="UTF-8"> 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-  <title>Musician Star Simulator</title> 
-  <link rel="stylesheet" href="styles.css"> 
- <style type="text/css" id="dcoder_stylesheet">body {
-    font-family: Arial, sans-serif;
-    background-color: #121212;
-    color: #ffffff;
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GNace - Free Crypto Trading Platform</title>
+    <link rel="stylesheet" href="styles.css">
+<style type="text/css" id="dcoder_stylesheet">* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Arial, sans-serif;
 }
 
-.container {
+body {
+    color: #d3d3d3; /* Light gray text on black background */
+    position: relative;
+    overflow-x: hidden;
+    background: #000000; /* Black background */
+    line-height: 1.6;
+}
+
+canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    opacity: 0.8;
+}
+
+header {
+    background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent black */
+    color: #d3d3d3; /* Light gray text */
+    padding: 15px;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 2em;
+}
+
+.hero {
+    text-align: center;
+    padding: 30px 15px;
+    background-color: #343a40; /* Dark gray background */
+    margin: 10px;
+    border-radius: 10px;
+}
+
+.hero h2 {
+    font-size: 1.5em;
+    margin-bottom: 15px;
+    color: #007bff; /* Blue headers */
+}
+
+.hero p {
+    font-size: 1em;
+    margin-bottom: 15px;
+    color: #000000; /* Black text on dark gray */
+}
+
+.signup-form {
     max-width: 100%;
     margin: 0 auto;
-    padding: 20px;
-    padding-bottom: 80px; /* Add padding to ensure content isn’t hidden behind the navigation bar */
-}
-
-.screen {
-    display: none;
-}
-
-.screen.active {
-    display: block;
-}
-
-/* Main Menu Styles */
-.main-menu {
-    text-align: center;
-    padding-top: 50px;
-}
-
-.main-menu h1 {
-    font-size: 36px;
-    margin-bottom: 40px;
-    color: #1db954;
-}
-
-.menu-buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    max-width: 300px;
-    margin: 0 auto;
-}
-
-/* Save Slots Styles */
-.save-slots {
-    text-align: center;
-}
-
-.save-slot-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 15px;
-    padding: 20px;
-}
-
-.save-slot {
-    background-color: #2a2a2a;
-    border-radius: 10px;
-    padding: 20px;
-    font-size: 18px;
-    cursor: pointer;
-    transition: transform 0.3s ease, background-color 0.3s ease;
-}
-
-.save-slot:hover {
-    transform: scale(1.05);
-    background-color: #3a3a3a;
-}
-
-.character-creation {
-    text-align: center;
-}
-
-.character-creation h2 {
-    font-size: 24px;
-    margin-bottom: 20px;
-}
-
-.creation-section {
-    margin: 15px 0;
-    color: #b3b3b3;
-}
-
-.creation-section label {
-    display: block;
-    margin-bottom: 5px;
-    font-size: 16px;
-}
-
-.creation-section input,
-.creation-section select {
-    width: 100%;
-    max-width: 300px;
-    padding: 8px;
-    margin-bottom: 10px;
-    border-radius: 5px;
-    border: 1px solid #b3b3b3;
-    background-color: #2a2a2a;
-    color: #ffffff;
-}
-
-.upload-section {
-    margin: 15px 0;
-    color: #b3b3b3;
-}
-
-.upload-section label {
-    display: block;
-    margin-bottom: 5px;
-    font-size: 16px;
-}
-
-.upload-section input {
-    margin-bottom: 10px;
-}
-
-.preview-img {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    object-fit: cover;
-    display: block;
-    margin: 10px auto;
-    border: 2px solid #b3b3b3;
-}
-
-.action-btn {
-    background-color: #1db954;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 20px;
-    cursor: pointer;
-    font-size: 16px;
-    margin: 20px auto;
-    display: block;
-    width: 90%;
-    max-width: 300px;
-    margin-bottom: 20px; /* Add spacing between the button and the navigation bar */
-}
-
-.action-btn:hover {
-    background-color: #1ed760;
-}
-
-.social-platforms {
-    text-align: center;
-}
-
-.social-platforms h2 {
-    font-size: 24px;
-    margin-bottom: 20px;
-}
-
-.welcome-text {
-    font-size: 28px;
-    margin-bottom: 10px;
-}
-
-.info-text {
-    font-size: 16px;
-    color: #b3b3b3;
-    margin: 5px 0;
-}
-
-.platform-circle {
-    background-color: #1a73e8;
-    border-radius: 50%;
-    width: 300px;
-    height: 300px;
-    margin: 20px auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-}
-
-.artist-profile-img {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 3px solid #ffffff;
-}
-
-.notification-bar {
-    display: flex;
-    justify-content: space-around;
-    background-color: #2a2a2a;
-    padding: 10px 0;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    border-top: 1px solid #282828;
-    z-index: 1000;
-}
-
-.nav-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-.nav-icon {
-    width: 30px;
-    height: 30px;
-    cursor: pointer;
-}
-
-.nav-label {
-    font-size: 12px;
-    color: #b3b3b3;
-    margin-top: 5px;
-}
-
-.home-screen {
-    text-align: center;
-}
-
-.stats-bar {
-    background-color: #2a2a2a;
-    padding: 10px;
-    position: sticky;
-    top: 0;
-    display: flex;
-    justify-content: space-around;
-    border-bottom: 1px solid #282828;
-}
-
-.stat {
-    font-size: 16px;
-    color: #b3b3b3;
-    display: flex;
-    align-items: center; /* Align icon and text vertically */
-}
-
-.stat-icon {
-    width: 20px;
-    height: 20px;
-    margin-right: 5px; /* Space between icon and text */
-    object-fit: contain; /* Ensure icons maintain aspect ratio */
-}
-
-.stat span {
-    color: #ffffff;
-    font-weight: bold;
-}
-
-.date-display {
-    font-size: 18px;
-    margin: 20px 0;
-}
-
-/* Social Screen Styles */
-.social-screen {
-    text-align: center;
-}
-
-.platform-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
-    padding: 10px;
-}
-
-.platform-item {
-    background-color: #2a2a2a;
-    border-radius: 10px;
-    padding: 15px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-    cursor: pointer; /* Make the platform items clickable */
-}
-
-.platform-logo {
-    width: 50px;
-    height: 50px;
-    margin-bottom: 10px;
-    object-fit: contain; /* Ensure logos maintain aspect ratio */
-}
-
-.platform-name {
-    font-size: 16px;
-    color: #ffffff;
-}
-
-/* Spotify Screen Styles */
-.spotify-screen {
-    text-align: center;
-    position: relative; /* For positioning the back button */
-}
-
-.spotify-header {
-    padding: 30px 20px; /* Increased padding for better spacing */
-    background: linear-gradient(to bottom, #2a2a2a, #1a1a1a); /* Smoother gradient */
-    position: relative; /* For positioning the back button */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
-}
-
-.back-btn {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    width: 24px;
-    height: 24px;
-    cursor: pointer;
-}
-
-.spotify-profile-img {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 3px solid #ffffff;
-    margin-bottom: 15px; /* Increased margin for better spacing */
-}
-
-.spotify-artist-name {
-    font-size: 32px;
-    font-weight: 700; /* Slightly bolder for emphasis */
-    margin: 10px 0;
-}
-
-.spotify-stats {
-    font-size: 14px;
-    color: #b3b3b3;
-    margin: 5px 0;
-}
-
-.spotify-content {
-    padding: 30px 20px; /* Increased padding for better spacing */
-}
-
-.spotify-section {
-    margin-bottom: 40px; /* Increased margin for better separation */
-    text-align: left;
-}
-
-.spotify-section h2 {
-    font-size: 20px;
-    font-weight: 600; /* Slightly bolder for emphasis */
-    margin-bottom: 15px; /* Increased margin for better spacing */
-}
-
-.empty-text {
-    font-size: 14px;
-    color: #b3b3b3;
-    font-style: italic;
-}
-
-.about-artist-content {
-    background-color: #2a2a2a;
-    border-radius: 10px;
     padding: 20px; /* Increased padding for better spacing */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+    background: linear-gradient(135deg, #007bff, #28a745); /* Blue-to-green gradient */
+    border-radius: 10px; /* Slightly larger radius for smoother edges */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4); /* Enhanced shadow for depth */
 }
 
-.about-artist-img {
+.signup-form h3 {
+    color: #d3d3d3; /* Light gray text */
+    font-size: 1.5em;
+    margin-bottom: 20px;
+}
+
+.signup-form input {
     width: 100%;
-    max-width: 200px;
-    height: auto;
-    border-radius: 10px;
-    margin-bottom: 15px; /* Increased margin for better spacing */
-    object-fit: cover;
+    padding: 12px; /* Slightly larger padding for better usability */
+    margin: 10px 0;
+    border: 2px solid #007bff; /* Blue border */
+    border-radius: 6px; /* Softer corners */
+    font-size: 1em;
+    background-color: #6c757d; /* Light gray background */
+    color: #000000; /* Black text */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions */
 }
 
-#spotify-bio {
-    font-size: 16px;
-    color: #ffffff;
+.signup-form input:focus {
+    border-color: #28a745; /* Green border on focus */
+    box-shadow: 0 0 8px rgba(40, 167, 69, 0.5); /* Green glow on focus */
+    outline: none;
+}
+
+.signup-form input::placeholder {
+    color: #d3d3d3; /* Light gray placeholder text */
+}
+
+.signup-form button {
+    width: 100%;
+    padding: 12px;
+    background-color: #28a745; /* Green button */
+    color: #d3d3d3; /* Light gray text */
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth hover and click effect */
+}
+
+.signup-form button:hover {
+    background-color: #0056b3; /* Blue hover effect */
+    transform: scale(1.02); /* Slight scale-up on hover */
+}
+
+.signup-form a {
+    color: #17a2b8; /* Teal link */
+    text-decoration: none;
+}
+
+.signup-form a:hover {
+    color: #138496; /* Darker teal on hover */
+}
+
+.signup-form p {
+    color: #d3d3d3; /* Light gray text */
+    font-size: 0.9em;
     margin-top: 10px;
 }
 
-.spotify-nav-bar {
-    display: flex;
-    justify-content: space-around;
-    background-color: #2a2a2a;
-    padding: 10px 0;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    border-top: 1px solid #282828;
-    z-index: 1000;
-}
-
-/* Distributor Screen Styles */
-.distributor-screen {
+.market-data {
+    padding: 30px 15px;
     text-align: center;
-}
-
-.distributor-header {
-    padding: 20px;
-    position: relative;
-}
-
-.distributor-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px; /* Reduced gap for mobile */
-    padding: 10px;
-}
-
-.distributor-item {
-    background-color: #2a2a2a;
+    background-color: #343a40; /* Dark gray background */
+    margin: 10px;
     border-radius: 10px;
-    padding: 10px; /* Reduced padding for mobile */
-    text-align: center;
-    cursor: pointer;
-    transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
-.distributor-item:hover {
-    transform: scale(1.05);
-    background-color: #3a3a3a;
+.market-data h2 {
+    font-size: 1.5em;
+    margin-bottom: 15px;
+    color: #007bff; /* Blue headers */
 }
 
-.distributor-logo {
-    width: 50px;
-    height: 50px;
-    margin-bottom: 8px;
-    object-fit: contain;
-}
-
-.distributor-name {
-    font-size: 16px;
-    font-weight: bold;
-}
-
-.distributor-item p {
-    font-size: 14px;
-    color: #b3b3b3;
-    margin: 5px 0 0;
-}
-
-.distributor-options {
-    text-align: center;
-}
-
-.action-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
+.market-grid {
+    display: flex;
+    justify-content: center;
     gap: 10px;
-    padding: 10px;
+    flex-wrap: wrap;
 }
 
-.create-song, .create-album, .song-selection, .album-genre-selection {
-    text-align: center;
-}
-
-.unreleased-screen, .released-screen {
-    text-align: center;
-}
-
-.unreleased-item, .released-item {
-    background-color: #2a2a2a;
-    border-radius: 10px;
+.market-item {
+    background-color: #343a40; /* Dark gray background */
     padding: 15px;
-    margin: 10px 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    width: 100%;
+    max-width: 250px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     transition: transform 0.3s ease;
 }
 
-.unreleased-item:hover, .released-item:hover {
-    transform: translateX(5px);
+.market-item:hover {
+    transform: translateY(-5px);
 }
 
-.release-item {
+.market-item h3 {
+    color: #007bff; /* Blue headers */
+}
+
+.market-item p {
+    color: #000000; /* Black text on dark gray */
+}
+
+.dashboard {
+    display: none;
+    padding: 30px 15px;
+    text-align: center;
+    background-color: #343a40; /* Dark gray background */
+    margin: 10px;
+    border-radius: 10px;
+}
+
+.dashboard h2 {
+    font-size: 1.5em;
+    margin-bottom: 15px;
+    color: #007bff; /* Blue headers */
+}
+
+.dashboard-grid {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.dashboard-item {
+    background-color: #343a40; /* Dark gray background */
+    padding: 15px;
+    width: 100%;
+    max-width: 300px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.dashboard-item input {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid #6c757d; /* Light gray border */
+    border-radius: 4px;
+    font-size: 1em;
+    background-color: #6c757d; /* Light gray background */
+    color: #000000; /* Black text */
+}
+
+.dashboard-item button {
+    width: 100%;
+    padding: 10px;
+    background-color: #28a745; /* Green button */
+    color: #d3d3d3; /* Light gray text */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.dashboard-item button:hover {
+    background-color: #218838; /* Darker green on hover */
+}
+
+.balance-actions {
     display: flex;
     align-items: center;
+    gap: 10px;
     margin-bottom: 10px;
 }
 
-.release-cover {
-    width: 50px;
-    height: 50px;
-    border-radius: 5px;
-    object-fit: cover;
-    margin-right: 10px;
+.balance-actions span {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #000000; /* Black text */
 }
 
-/* Updated styles for the Popular section */
-#popular-releases, #popular-songs {
+.balance-actions button {
+    padding: 8px 12px;
+    background-color: #17a2b8; /* Teal button */
+    color: #d3d3d3; /* Light gray text */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+}
+
+.balance-actions button:hover {
+    background-color: #138496; /* Darker teal on hover */
+}
+
+.free-offer {
+    background: linear-gradient(135deg, #28a745, #218838); /* Green gradient */
+    padding: 15px;
+    border-radius: 8px;
+    color: #d3d3d3; /* Light gray text */
+    text-align: center;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.free-offer h3 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.free-offer button {
+    background-color: #17a2b8; /* Teal button */
+    color: #d3d3d3; /* Light gray text */
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+}
+
+.free-offer button:hover {
+    background-color: #138496; /* Darker teal on hover */
+}
+
+.popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #343a40; /* Dark gray background */
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    max-width: 90%;
+    width: 300px;
+    text-align: center;
+    color: #000000; /* Black text */
+}
+
+.popup input, .popup select {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid #6c757d; /* Light gray border */
+    border-radius: 4px;
+    font-size: 1em;
+    background-color: #6c757d; /* Light gray background */
+    color: #000000; /* Black text */
+}
+
+.popup button {
+    width: 100%;
+    padding: 10px;
+    background-color: #28a745; /* Green button */
+    color: #d3d3d3; /* Light gray text */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.popup button:hover {
+    background-color: #218838; /* Darker green on hover */
+}
+
+.review-popup {
+    background: linear-gradient(135deg, #28a745, #218838); /* Green gradient */
+    color: #d3d3d3; /* Light gray text */
+}
+
+.withdraw-review-popup {
+    background: linear-gradient(135deg, #28a745, #218838); /* Green gradient */
+    color: #d3d3d3; /* Light gray text */
+}
+
+.popup table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0;
+}
+
+.popup table th, .popup table td {
+    padding: 8px;
+    border: 1px solid #6c757d; /* Light gray border */
+    font-size: 0.9em;
+    color: #000000; /* Black text */
+}
+
+.popup table th {
+    background-color: #6c757d; /* Light gray background */
+    color: #000000; /* Black text */
+}
+
+.feature-list {
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
 
-.release-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.release-rank {
-    width: 20px;
-    font-size: 16px;
-    color: #ffffff;
-    font-weight: bold;
-}
-
-.release-cover {
-    width: 50px;
-    height: 50px;
-    border-radius: 5px;
-    object-fit: cover;
-}
-
-.release-info {
-    flex: 1;
-}
-
-.release-title {
-    font-size: 16px;
-    color: #ffffff;
-    margin: 0;
-}
-
-.release-streams {
-    font-size: 14px;
-    color: #b3b3b3;
-    margin: 0;
-}
-
-.see-more-btn {
-    background: none;
-    border: 1px solid #b3b3b3;
-    color: #b3b3b3;
-    padding: 5px 15px;
-    border-radius: 20px;
-    cursor: pointer;
-    font-size: 14px;
-    margin-top: 10px;
-    align-self: center;
-}
-
-.see-more-btn:hover {
-    border-color: #ffffff;
-    color: #ffffff;
-}
-
-/* Activity Screen Styles */
-.activity-screen {
-    text-align: center;
-}
-
-.activity-section {
-    margin-bottom: 40px;
-    text-align: left;
-}
-
-.activity-section h2 {
-    font-size: 20px;
-    font-weight: 600;
-    margin-bottom: 15px;
-}
-
-#current-job {
-    background-color: #2a2a2a;
-    border-radius: 10px;
-    padding: 15px;
-    margin-bottom: 15px;
-}
-
-#current-job p {
-    font-size: 16px;
-    color: #ffffff;
-    margin: 0 0 10px 0;
-}
-
-#current-job-name {
-    font-weight: bold;
-}
-
-#job-list, #event-list {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
+.feature-list button {
+    width: 100%;
     padding: 10px;
+    background-color: #17a2b8; /* Teal button */
+    color: #d3d3d3; /* Light gray text */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
-.job-item, .event-item {
-    background-color: #2a2a2a;
+.feature-list button:hover {
+    background-color: #138496; /* Darker teal on hover */
+}
+
+.investment-tiers {
+    background-color: #343a40; /* Dark gray background */
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    margin-top: 15px;
+}
+
+.investment-tiers h3 {
+    font-size: 1.3em;
+    margin-bottom: 10px;
+    color: #007bff; /* Blue headers */
+}
+
+.investment-tiers ul {
+    list-style: none;
+    text-align: left;
+    color: #000000; /* Black text */
+}
+
+.investment-tiers li {
+    margin: 8px 0;
+}
+
+.investment-tiers button {
+    width: 100%;
+    padding: 10px;
+    background-color: #17a2b8; /* Teal button */
+    color: #d3d3d3; /* Light gray text */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.investment-tiers button:hover {
+    background-color: #138496; /* Darker teal on hover */
+}
+
+.features {
+    padding: 30px 15px;
+    text-align: center;
+    background-color: #343a40; /* Dark gray background */
+    margin: 10px;
     border-radius: 10px;
+}
+
+.features h2 {
+    font-size: 1.5em;
+    margin-bottom: 15px;
+    color: #007bff; /* Blue headers */
+}
+
+.feature-grid {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.feature {
+    background-color: #343a40; /* Dark gray background */
+    padding: 15px;
+    width: 100%;
+    max-width: 250px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.feature h3 {
+    color: #007bff; /* Blue headers */
+}
+
+.feature p {
+    color: #000000; /* Black text */
+}
+
+.legal {
     padding: 15px;
     text-align: center;
-    cursor: pointer;
-    transition: transform 0.3s ease, background-color 0.3s ease;
+    background-color: #343a40; /* Dark gray background */
+    margin: 10px;
+    border-radius: 10px;
 }
 
-.job-item:hover, .event-item:hover {
-    transform: scale(1.05);
-    background-color: #3a3a3a;
+footer {
+    background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent black */
+    color: #d3d3d3; /* Light gray text */
+    text-align: center;
+    padding: 15px;
+    margin-top: 10px;
 }
 
-.job-name, .event-name {
-    font-size: 16px;
-    font-weight: bold;
-    display: block;
-    margin-bottom: 5px;
-}
-
-.job-item p, .event-item p {
-    font-size: 14px;
-    color: #b3b3b3;
-    margin: 0;
-}
-
-/* Media Query for Mobile Devices (screens smaller than 600px) */
-@media (max-width: 600px) {
-    .distributor-grid, #job-list, #event-list {
-        grid-template-columns: 1fr; /* Single column for mobile */
-        gap: 8px; /* Further reduced gap */
-        padding: 5px;
+/* Mobile Responsiveness */
+@media (max-width: 480px) {
+    header h1 {
+        font-size: 1.5em;
     }
 
-    .distributor-item, .job-item, .event-item {
-        padding: 8px; /* Further reduced padding */
-        display: flex;
+    .hero h2, .market-data h2, .dashboard h2, .features h2 {
+        font-size: 1.2em;
+    }
+
+    .hero, .market-data, .dashboard, .features, .legal {
+        padding: 15px;
+        margin: 5px;
+    }
+
+    .signup-form, .market-item, .dashboard-item, .feature {
+        padding: 10px;
+    }
+
+    .signup-form input, .dashboard-item input, .popup input, .popup select {
+        padding: 8px;
+        margin: 6px 0;
+    }
+
+    .signup-form button, .dashboard-item button, .popup button, .investment-tiers button {
+        padding: 8px;
+        font-size: 0.9em;
+    }
+
+    .balance-actions {
         flex-direction: column;
-        align-items: center;
+        gap: 5px;
     }
 
-    .distributor-logo {
-        width: 40px; /* Reduced logo size for mobile */
-        height: 40px;
-        margin-bottom: 5px;
+    .balance-actions button {
+        width: 100%;
+        padding: 10px;
     }
 
-    .distributor-name, .job-name, .event-name {
-        font-size: 14px; /* Reduced font size */
+    .free-offer h3 {
+        font-size: 1.2em;
     }
 
-    .distributor-item p, .job-item p, .event-item p {
-        font-size: 12px; /* Reduced font size for royalties text */
-        margin: 3px 0 0;
+    .investment-tiers h3 {
+        font-size: 1.1em;
     }
 
-    .distributor-header h2 {
-        font-size: 20px; /* Slightly smaller header */
+    .investment-tiers li {
+        margin: 5px 0;
     }
 
-    .container {
-        padding: 10px; /* Reduced padding for mobile */
-        padding-bottom: 70px; /* Adjust for smaller nav bar */
+    .popup table th, .popup table td {
+        padding: 5px;
+        font-size: 0.8em;
     }
+}</style></head>
+<body>
+    <canvas id="particleCanvas"></canvas>
 
-    .notification-bar {
-        padding: 8px 0; /* Slightly smaller padding */
-    }
+    <header>
+        <h1>GNace</h1>
+        <p>Your Free Crypto Trading Platform</p>
+    </header>
 
-    .nav-icon {
-        width: 25px; /* Slightly smaller icons */
-        height: 25px;
-    }
-
-    .nav-label {
-        font-size: 10px; /* Smaller labels */
-    }
-}</style></head> 
- <body> 
-  <div class="container"> 
-   <!-- Main Menu Screen -->
-   <div class="screen main-menu active" id="main-menu">
-    <h1>Musician Star Simulator</h1>
-    <div class="menu-buttons">
-     <button class="action-btn" onclick="showScreen('save-slots')">Play</button>
-     <button class="action-btn" onclick="alert('Settings coming soon!')">Settings</button>
-     <button class="action-btn" onclick="window.close()">Exit</button>
-    </div>
-   </div>
-
-   <!-- Save Slots Screen -->
-   <div class="screen save-slots" id="save-slots">
-    <h2>Select a Save Slot</h2>
-    <div class="save-slot-grid">
-     <div class="save-slot" onclick="selectSaveSlot(1)">Save Slot 1</div>
-     <div class="save-slot" onclick="selectSaveSlot(2)">Save Slot 2</div>
-     <div class="save-slot" onclick="selectSaveSlot(3)">Save Slot 3</div>
-     <div class="save-slot" onclick="selectSaveSlot(4)">Save Slot 4</div>
-     <div class="save-slot" onclick="selectSaveSlot(5)">Save Slot 5</div>
-    </div>
-    <button class="action-btn" onclick="showScreen('main-menu')">Back</button>
-   </div>
-
-   <!-- Character Creation Screen --> 
-   <div class="screen character-creation" id="character-creation"> 
-    <h2>Create Your Musician Character</h2> 
-    <div class="upload-section"> <label for="artist-upload">Profile Picture:</label> 
-     <input type="file" id="artist-upload" accept="image/*"> 
-     <img src="" alt="Profile Preview" class="preview-img" id="artist-img-preview"> 
-    </div> 
-    <div class="creation-section"> <label for="artist-name">Artist Name:</label> 
-     <input type="text" id="artist-name" placeholder="Enter your artist name"> 
-    </div> 
-    <div class="creation-section"> <label for="music-genre">Music Genre:</label> <select id="music-genre"> <option value="Pop">Pop</option> <option value="Rock">Rock</option> <option value="Hip-Hop">Hip-Hop</option> <option value="Electronic">Electronic</option> <option value="R&amp;B">R&amp;B</option> <option value="Jazz">Jazz</option> <option value="Country">Country</option> <option value="Classical">Classical</option> <option value="Reggae">Reggae</option> <option value="Metal">Metal</option> <option value="Indie">Indie</option> <option value="Folk">Folk</option> </select> 
-    </div> 
-    <div class="creation-section"> <label for="gender">Gender:</label> <select id="gender"> <option value="Male">Male</option> <option value="Female">Female</option> <option value="Non-Binary">Non-Binary</option> <option value="Other">Other</option> </select> 
-    </div> 
-    <div class="creation-section"> <label for="age">Age:</label> 
-     <input type="number" id="age" placeholder="Enter your age" min="15" max="99"> 
-    </div> 
-    <div class="creation-section"> <label for="country">Country:</label> <select id="country"> <option value="United States">United States</option> <option value="United Kingdom">United Kingdom</option> <option value="Canada">Canada</option> <option value="Australia">Australia</option> <option value="Brazil">Brazil</option> <option value="France">France</option> <option value="Germany">Germany</option> <option value="India">India</option> <option value="Japan">Japan</option> <option value="South Africa">South Africa</option> <option value="Nigeria">Nigeria</option> <option value="Mexico">Mexico</option> </select> 
-    </div> 
-    <div class="creation-section"> <label for="year-started">Year Started:</label> <select id="year-started"> <!-- Options will be populated dynamically --> </select> 
-    </div> <button class="action-btn" onclick="saveCharacter()">Create</button> 
-   </div> 
-
-   <!-- Social Platforms Screen --> 
-   <div class="screen social-platforms" id="social-platforms"> 
-    <h2 class="welcome-text">Welcome, <span id="artist-name-display">Artist</span>!</h2> 
-    <p class="info-text">Genre: <span id="genre-display">Unknown</span></p> 
-    <p class="info-text">Gender: <span id="gender-display">Unknown</span></p> 
-    <p class="info-text">Age: <span id="age-display">Unknown</span></p> 
-    <p class="info-text">Country: <span id="country-display">Unknown</span></p> 
-    <p class="info-text">Year Started: <span id="year-started-display">Unknown</span></p> 
-    <div class="platform-circle"> 
-     <img src="" alt="Artist Profile" class="artist-profile-img" id="artist-profile-img"> 
-    </div> 
-    <div class="notification-bar"> 
-     <div class="nav-item"> 
-      <img src="https://i.ibb.co/9kZfKJDj/images.png" alt="Home" class="nav-icon" onclick="showScreen('home-screen'); updateHomeScreen();"> <span class="nav-label">Home</span> 
-     </div> 
-     <div class="nav-item"> 
-      <img src="https://i.ibb.co/s9Nn2xTv/images-1.png" alt="Distributor" class="nav-icon" , onclick="showScreen('distributor-screen')"> <span class="nav-label">Distributor</span> 
-     </div> 
-     <div class="nav-item"> 
-      <img src="https://i.ibb.co/pvX82tgF/download.png" alt="Social" class="nav-icon" onclick="showScreen('social-screen')"> <span class="nav-label">Social</span> 
-     </div> 
-     <div class="nav-item"> 
-      <img src="https://i.ibb.co/wFnRn5VF/download-1.png" alt="Activity" class="nav-icon" onclick="showScreen('activity-screen')"> <span class="nav-label">Activity</span> 
-     </div> 
-     <div class="nav-item"> 
-      <img src="https://i.ibb.co/7d0mnm9C/download-2.png" alt="Others" class="nav-icon" onclick="alert('Others clicked!')"> <span class="nav-label">Others</span> 
-     </div> 
-    </div> 
-   </div> 
-
-   <!-- Home Screen --> 
-   <div class="screen home-screen" id="home-screen"> 
-    <div class="stats-bar"> 
-     <div class="stat"> 
-      <img src="https://i.ibb.co/7J4ms0Ym/1000010812.png" alt="Fame Icon" class="stat-icon"> Fame: <span id="fame-level">0%</span> 
-     </div> 
-     <div class="stat"> 
-      <img src="https://i.ibb.co/DDRmHcg5/1000010813.png" alt="Money Icon" class="stat-icon"> Money: $<span id="money">100</span> 
-     </div> 
-     <div class="stat"> 
-      <img src="https://i.ibb.co/6RGgtWX8/1000010814.png" alt="Energy Icon" class="stat-icon"> Energy: <span id="energy">100</span> 
-     </div> 
-    </div> 
-    <h2 class="welcome-text"><span id="home-artist-name-display">Artist</span></h2> 
-    <p class="info-text">Genre: <span id="home-genre-display">Unknown</span></p> 
-    <p class="info-text">Gender: <span id="home-gender-display">Unknown</span></p> 
-    <p class="info-text">Age: <span id="home-age-display">Unknown</span></p> 
-    <p class="info-text">Country: <span id="home-country-display">Unknown</span></p> 
-    <p class="info-text">Year Started: <span id="home-year-started-display">Unknown</span></p> 
-    <div class="platform-circle"> 
-     <img src="" alt="Artist Profile" class="artist-profile-img" id="home-artist-profile-img"> 
-    </div> 
-    <div class="date-display" id="current-date">
-      Year/Date/Month 
-    </div> <button class="action-btn" onclick="nextWeek()">Next Week</button> 
-    <div class="notification-bar"> 
-     <div class="nav-item"> 
-      <img src="https://i.ibb.co/9kZfKJDj/images.png" alt="Home" class="nav-icon" onclick="showScreen('home-screen'); updateHomeScreen();"> <span class="nav-label">Home</span> 
-     </div> 
-     <div class="nav-item"> 
-      <img src="https://i.ibb.co/s9Nn2xTv/images-1.png" alt="Distributor" class="nav-icon" onclick="showScreen('distributor-screen')"> <span class="nav-label">Distributor</span> 
-     </div> 
-     <div class="nav-item"> 
-      <img src="https://i.ibb.co/pvX82tgF/download.png" alt="Social" class="nav-icon" onclick="showScreen('social-screen')"> <span class="nav-label">Social</span> 
-     </div> 
-     <div class="nav-item"> 
-      <img src="https://i.ibb.co/wFnRn5VF/download-1.png" alt="Activity" class="nav-icon" onclick="showScreen('activity-screen')"> <span class="nav-label">Activity</span> 
-     </div> 
-     <div class="nav-item"> 
-      <img src="https://i.ibb.co/7d0mnm9C/download-2.png" alt="Others" class="nav-icon" onclick="alert('Others clicked!')"> <span class="nav-label">Others</span> 
-     </div> 
-    </div> 
-   </div> 
-
-   <!-- Social Screen --> 
-   <div class="screen social-screen" id="social-screen"> 
-    <h2 class="welcome-text">Social Platforms</h2> 
-    <div class="platform-grid"> 
-     <div class="platform-item" onclick="showScreen('spotify-screen'); updateSpotifyScreen();"> 
-      <img src="https://i.ibb.co/rKWPDmH5/IMG-20250322-180853.png" alt="Spotify Logo" class="platform-logo"> <span class="platform-name">Spotify</span> 
-     </div> 
-     <div class="platform-item"> 
-      <img src="https://i.ibb.co/tp6x51tJ/IMG-20250322-181105.png" alt="Apple Music Logo" class="platform-logo"> <span class="platform-name">Apple Music</span> 
-     </div> 
-     <div class="platform-item"> 
-      <img src="https://i.ibb.co/Zz6K76gM/IMG-20250322-181132.png" alt="YouTube Logo" class="platform-logo"> <span class="platform-name">YouTube</span> 
-     </div> 
-     <div class="platform-item"> 
-      <img src="https://i.ibb.co/zVQ1L2tF/IMG-20250322-181701.jpg" alt="TikTok Logo" class="platform-logo"> <span class="platform-name">TikTok</span> 
-     </div> 
-     <div class="platform-item"> 
-      <img src="https://i.ibb.co/R4MC4hGb/IMG-20250322-181639.jpg" alt="Instagram Logo" class="platform-logo"> <span class="platform-name">Instagram</span> 
-     </div> 
-     <div class="platform-item"> 
-      <img src="https://i.ibb.co/bjkbXR4D/IMG-20250322-181619.jpg" alt="X Logo" class="platform-logo"> <span class="platform-name">X</span> 
-     </div> 
-     <div class="platform-item"> 
-      <img src="https://i.ibb.co/kvQtYPw/IMG-20250322-183355.jpg" alt="Ads Logo" class="platform-logo"> <span class="platform-name">Ads</span> 
-     </div> 
-    </div> 
-    <div class="notification-bar"> 
-     <div class="nav-item"> 
-      <img src="https://i.ibb.co/9kZfKJDj/images.png" alt="Home" class="nav-icon" onclick="showScreen('home-screen'); updateHomeScreen();"> <span class="nav-label">Home</span> 
-     </div> 
-     <div class="nav-item"> 
-      <img src="https://i.ibb.co/s9Nn2xTv/images-1.png" alt="Distributor" class="nav-icon" onclick="showScreen('distributor-screen')"> <span class="nav-label">Distributor</span> 
-     </div> 
-     <div class="nav-item"> 
-      <img src="https://i.ibb.co/pvX82tgF/download.png" alt="Social" class="nav-icon" onclick="showScreen('social-screen')"> <span class="nav-label">Social</span> 
-     </div> 
-     <div class="nav-item"> 
-      <img src="https://i.ibb.co/wFnRn5VF/download-1.png" alt="Activity" class="nav-icon" onclick="showScreen('activity-screen')"> <span class="nav-label">Activity</span> 
-     </div> 
-     <div class="nav-item"> 
-      <img src="https://i.ibb.co/7d0mnm9C/download-2.png" alt="Others" class="nav-icon" onclick="alert('Others clicked!')"> <span class="nav-label">Others</span> 
-     </div> 
-    </div> 
-   </div> 
-
-   <!-- Spotify Screen --> 
-   <div class="screen spotify-screen" id="spotify-screen"> 
-    <div class="spotify-header"> 
-     <img src="https://i.ibb.co/HTMQ32pV/back-arrow-icon.png" alt="Back" class="back-btn" onclick="showScreen('social-screen')"> 
-     <img src="" alt="Spotify Artist Profile" class="spotify-profile-img" id="spotify-profile-img"> 
-     <p class="spotify-stats" id="spotify-monthly-listeners-header">0 Monthly Listeners</p> 
-     <h1 class="spotify-artist-name" id="spotify-artist-name">Artist</h1> 
-     <p class="spotify-stats" id="spotify-followers">0 Followers</p> 
-    </div> 
-    <div class="spotify-content"> 
-     <div class="spotify-section"> 
-      <h2>Popular</h2> 
-      <div id="popular-releases">
-        <p class="empty-text">No popular releases yet.</p>
-      </div> 
-      <button class="see-more-btn" id="see-more-popular" style="display: none;">See more</button>
-     </div> 
-     <div class="spotify-section"> 
-      <h2>Latest Releases</h2> 
-      <div id="latest-releases">
-        <p class="empty-text">No latest releases yet.</p>
-      </div> 
-     </div> 
-     <div class="spotify-section"> 
-      <h2>Popular Songs</h2> 
-      <div class="distributor-header">
-       <img src="https://i.ibb.co/HTMQ32pV/back-arrow-icon.png" alt="Back" class="back-btn" onclick="showScreen('spotify-screen'); updateSpotifyScreen();">
-      </div>
-      <div id="popular-songs">
-        <p class="empty-text">No popular songs yet.</p>
-      </div> 
-      <button class="see-more-btn" id="see-more-songs" style="display: none;">See more</button>
-     </div> 
-     <div class="spotify-section"> 
-      <h2>Albums</h2> 
-      <div id="albums">
-        <p class="empty-text">No albums yet.</p>
-      </div> 
-     </div> 
-     <div class="spotify-section"> 
-      <h2>EPs</h2> 
-      <div id="eps">
-        <p class="empty-text">EP features coming soon.</p>
-      </div> 
-     </div> 
-     <div class="spotify-section"> 
-      <h2>About Artist</h2> 
-      <div class="about-artist-content"> 
-       <img src="" alt="Spotify Artist Profile" class="about-artist-img" id="about-artist-img"> 
-       <p class="spotify-stats" id="spotify-monthly-listeners">0 Monthly Listeners</p> 
-       <p id="spotify-bio">An musician</p> 
-      </div> 
-     </div> 
-    </div> 
-    <div class="spotify-nav-bar"> 
-     <div class="nav-item"> 
-      <img src="https://i.ibb.co/qMSgbckX/download.jpg" alt="Home" class="nav-icon" onclick="showScreen('home-screen'); updateHomeScreen();"> <span class="nav-label">Home</span> 
-     </div> 
-     <div class="nav-item"> 
-      <img src="https://i.ibb.co/F2pyrFC/1000011137.png" alt="Chart" class="nav-icon" onclick="alert('Chart features coming soon')"> <span class="nav-label">Chart</span> 
-     </div> 
-    </div> 
-   </div> 
-   
-   <!-- Distributor Screen -->
-   <div class="screen distributor-screen" id="distributor-screen">
-    <div class="distributor-header">
-     <img src="https://i.ibb.co/HTMQ32pV/back-arrow-icon.png" alt="Back" class="back-btn" onclick="showScreen('social-platforms')">
-     <h2>Select Your Distributor</h2>
-    </div>
-    <div class="distributor-grid">
-        <div class="distributor-item" onclick="selectDistributor('onerpm')">
-            <img src="https://i.ibb.co/yc9WW28q/file-TE71-XLn-XBA8yk-Dw-XVDm-QZH.webp" alt="OneRPM Logo" class="distributor-logo">
-            <span class="distributor-name">OneRPM</span>
-            <p>30% Royalties / Free</p>
+    <section class="hero" id="hero">
+        <h2>Welcome to GNace</h2>
+        <p>Sign up for free to trade cryptocurrencies like BNB, PI, and USDT, and claim your $1,000 bonus after a $50 deposit!</p>
+        <div class="signup-form">
+            <h3>Sign Up for Free</h3>
+            <input type="text" placeholder="Full Name" id="name" required>
+            <input type="email" placeholder="Email Address" id="email" required>
+            <input type="password" placeholder="Password" id="password" required>
+            <button onclick="showDashboard()">Create Free Account</button>
+            <p>or <a href="#" onclick="showLoginPopup()">Login</a></p>
+            <p>Verify your account with a wallet address to claim bonuses.</p>
         </div>
-        <div class="distributor-item" onclick="selectDistributor('tunecore')">
-            <img src="https://i.ibb.co/4Rxr1W7j/file-6n5o-Qx-N4ayo-Gx-CGGFYm-PFv.webp" alt="TuneCore Logo" class="distributor-logo">
-            <span class="distributor-name">TuneCore</span>
-            <p>50% Royalties / $10 Yearly</p>
+    </section>
+
+    <section class="market-data" id="marketData">
+        <h2>Market Trends</h2>
+        <div class="market-grid">
+            <div class="market-item">
+                <h3>Binance Coin (BNB)</h3>
+                <p>Price: ~$600 (Stable)</p>
+                <p>Trend: Strong due to Binance's ecosystem.</p>
+            </div>
+            <div class="market-item">
+                <h3>Pi Coin (PI)</h3>
+                <p>Price: $1.07 (Up 48.65%)</p>
+                <p>Trend: Volatile after mainnet launch.</p>
+            </div>
+            <div class="market-item">
+                <h3>Tether (USDT)</h3>
+                <p>Price: ~$1.00 (Stable)</p>
+                <p>Trend: Shifting to BUSD/USDC.</p>
+            </div>
         </div>
-        <div class="distributor-item" onclick="selectDistributor('cdbaby')">
-            <img src="https://i.ibb.co/5XymphF2/file-4u-A2en4-Um-Byfw-DX2-Ry4-Msd.webp" alt="CD Baby Logo" class="distributor-logo">
-            <span class="distributor-name">CD Baby</span>
-            <p>70% Royalties / $35 Yearly</p>
+    </section>
+
+    <section class="dashboard" id="dashboard">
+        <h2>Your GNace Dashboard</h2>
+        <div class="free-offer">
+            <h3>Get Free $1,000!</h3>
+            <p>Claim your bonus now. Requires a $50 deposit to withdraw. Subject to verification.</p>
+            <button onclick="showBonusPopup()">Claim Bonus</button>
         </div>
-        <div class="distributor-item" onclick="selectDistributor('distrokid')">
-            <img src="https://i.ibb.co/Wp4W1q7b/file-4-JFa-MLUDKz-KGZ6-WDRTEj-Yd.webp" alt="DistroKid Logo" class="distributor-logo">
-            <span class="distributor-name">DistroKid</span>
-            <p>80% Royalties / $50 Yearly</p>
+        <div class="dashboard-grid">
+            <div class="dashboard-item">
+                <h3>Profile Overview</h3>
+                <div class="balance-actions">
+                    <span id="balance">Balance: $0</span>
+                    <button onclick="showDepositPopup()">+</button>
+                    <button onclick="showWithdrawPopup()">Withdraw</button>
+                </div>
+                <p id="profileName">Name: [Your Name]</p>
+                <p id="profileEmail">Email: [Your Email]</p>
+                <p id="accountStatus">Account Status: Unverified</p>
+                <input type="text" placeholder="Verify with Wallet Address" id="verifyWallet">
+                <button onclick="verifyAccount()">Verify Account</button>
+            </div>
+            <div class="dashboard-item">
+                <h3>Manage Wallet Address</h3>
+                <input type="text" placeholder="Enter Crypto Wallet Address" id="walletAddress">
+                <button onclick="saveWallet()">Save Address</button>
+                <p id="currentAddress">Current Address: None</p>
+            </div>
+            <div class="dashboard-item">
+                <h3>Market Snapshot</h3>
+                <p>BNB: ~$600 (Stable)</p>
+                <p>PI: $1.07 (Up 48.65%)</p>
+                <p>USDT: ~$1.00 (Stable)</p>
+            </div>
+            <div class="dashboard-item">
+                <h3>More Features</h3>
+                <div class="feature-list">
+                    <button onclick="showPortfolio()">Portfolio Tracking</button>
+                    <button onclick="showTradingHistory()">Trading History</button>
+                    <button onclick="showPriceAlertPopup()">Set Price Alert</button>
+                </div>
+            </div>
         </div>
-        <div class="distributor-item" onclick="selectDistributor('dittomusic')">
-            <img src="https://i.ibb.co/BKT5gnPP/file-1kxr3-Ny5-Fi86-Mr1-Vv-ZZMn-X.webp" alt="Ditto Music Logo" class="distributor-logo">
-            <span class="distributor-name">Ditto Music</span>
-            <p>100% Royalties / $100 Yearly</p>
+        <div class="investment-tiers">
+            <h3>Investment Rewards</h3>
+            <ul>
+                <li><button onclick="invest(50)">Invest $50, get $5/day</button></li>
+                <li><button onclick="invest(100)">Invest $100, get $12/day</button></li>
+                <li><button onclick="invest(250)">Invest $250, get $30/day</button></li>
+                <li><button onclick="invest(500)">Invest $500, get $60/day</button></li>
+                <li><button onclick="invest(1000)">Invest $1,000, get $125/day</button></li>
+                <li><button onclick="invest(5000)">Invest $5,000, get $650/day</button></li>
+            </ul>
         </div>
-    </div>
-    
-    <!-- Distributor Options Screen -->
-    <div class="distributor-options" id="distributor-options" style="display: none;">
-     <div class="distributor-header">
-      <img src="https://i.ibb.co/HTMQ32pV/back-arrow-icon.png" alt="Back" class="back-btn" onclick="backToDistributorGrid()">
-      <h2 id="selected-distributor-name"></h2>
-     </div>
-     <div class="action-grid">
-      <button class="action-btn" onclick="showCreateSong()">Create Song (-10 Energy)</button>
-      <button class="action-btn" onclick="showCreateAlbum()">Create Album (-50 Energy)</button>
-      <button class="action-btn" disabled>Music Video (Coming Soon)</button>
-      <button class="action-btn" onclick="showUnreleased()">Unreleased</button>
-      <button class="action-btn" onclick="showReleased()">Released</button>
-      <button class="action-btn" disabled>Remix Song (Coming Soon)</button>
-      <button class="action-btn" disabled>Add Feature (Coming Soon)</button>
-     </div>
-     <div class="notification-bar">
-      <div class="nav-item">
-       <img src="https://i.ibb.co/9kZfKJDj/images.png" alt="Home" class="nav-icon" onclick="showScreen('home-screen'); updateHomeScreen();">
-       <span class="nav-label">Home</span>
-      </div>
-      <div class="nav-item">
-       <img src="https://i.ibb.co/s9Nn2xTv/images-1.png" alt="Distributor" class="nav-icon" onclick="showScreen('distributor-screen')">
-       <span class="nav-label">Distributor</span>
-      </div>
-      <div class="nav-item">
-       <img src="https://i.ibb.co/pvX82tgF/download.png" alt="Social" class="nav-icon" onclick="showScreen('social-screen')">
-       <span class="nav-label">Social</span>
-      </div>
-      <div class="nav-item">
-       <img src="https://i.ibb.co/wFnRn5VF/download-1.png" alt="Activity" class="nav-icon" onclick="showScreen('activity-screen')">
-       <span class="nav-label">Activity</span>
-      </div>
-      <div class="nav-item">
-       <img src="https://i.ibb.co/7d0mnm9C/download-2.png" alt="Others" class="nav-icon" onclick="alert('Others clicked!')">
-       <span class="nav-label">Others</span>
-      </div>
-     </div>
+    </section>
+
+    <div class="popup" id="depositPopup">
+        <h3>Fund Your Account</h3>
+        <p>How much do you want to deposit?</p>
+        <input type="number" placeholder="Enter amount (e.g., 50)" id="depositAmount" min="1">
+        <button onclick="showWallet()">Proceed</button>
     </div>
 
-    <!-- Create Song Screen -->
-    <div class="create-song" id="create-song" style="display: none;">
-     <div class="distributor-header">
-      <img src="https://i.ibb.co/HTMQ32pV/back-arrow-icon.png" alt="Back" class="back-btn" onclick="cancelCreateSong()">
-      <h2>Create Song</h2>
-     </div>
-     <div class="creation-section">
-      <label for="song-title">Song Title:</label>
-      <input type="text" id="song-title" placeholder="Enter song title">
-     </div>
-     <div class="creation-section">
-      <label for="song-photo">Add Photo:</label>
-      <input type="file" id="song-photo" accept="image/*" onchange="previewSongImage()">
-      <img src="" alt="Song Preview" class="preview-img" id="song-img-preview">
-     </div>
-     <div class="creation-section">
-      <label for="song-genre">Select Genre:</label>
-      <select id="song-genre">
-       <option value="Pop">Pop</option>
-       <option value="Rock">Rock</option>
-       <option value="Hip-Hop">Hip-Hop</option>
-       <option value="Electronic">Electronic</option>
-       <option value="R&amp;B">R&amp;B</option>
-       <option value="Jazz">Jazz</option>
-       <option value="Country">Country</option>
-       <option value="Classical">Classical</option>
-       <option value="Reggae">Reggae</option>
-       <option value="Metal">Metal</option>
-       <option value="Indie">Indie</option>
-       <option value="Folk">Folk</option>
-      </select>
-     </div>
-     <div class="creation-section">
-      <label for="studio-budget">Select Studio Budget:</label>
-      <select id="studio-budget">
-       <option value="">Select a studio</option>
-       <option value="small-pro">Small Pro - $500</option>
-       <option value="city-dj">City DJ - $1,000</option>
-       <option value="high-man">High Man - $10,000</option>
-       <option value="sign-cleb">Sign Cleb - $100,000</option>
-       <option value="mlj-pro">MLJ Pro - $1,000,000</option>
-      </select>
-     </div>
-     <button class="action-btn" onclick="cancelCreateSong()">Cancel</button>
-     <button class="action-btn" onclick="confirmCreateSong()">Confirm</button>
+    <div class="popup" id="walletPopup">
+        <h3>Send Payment</h3>
+        <p>Send <span id="depositAmountDisplay">$0</span> to this wallet address:</p>
+        <p style="word-break: break-all; font-weight: bold;">TQZjDzNyZRuoxTij3JU1ZrAKh3gFMkg1pE</p>
+        <button onclick="confirmDeposit()">Done</button>
     </div>
 
-    <!-- Create Album Screen -->
-    <div class="create-album" id="create-album" style="display: none;">
-     <div class="distributor-header">
-      <img src="https://i.ibb.co/HTMQ32pV/back-arrow-icon.png" alt="Back" class="back-btn" onclick="cancelCreateAlbum()">
-      <h2>Create Album</h2>
-     </div>
-     <div class="creation-section">
-      <label for="album-title">Album Title:</label>
-      <input type="text" id="album-title" placeholder="Enter album title">
-     </div>
-     <div class="creation-section">
-      <label for="album-photo">Add Photo:</label>
-      <input type="file" id="album-photo" accept="image/*" onchange="previewAlbumImage()">
-      <img src="" alt="Album Preview" class="preview-img" id="album-img-preview">
-     </div>
-     <div class="creation-section">
-      <button class="action-btn" onclick="showSongSelection()">Select Songs (At least 8)</button>
-      <div id="selected-songs-list"></div>
-     </div>
-     <button class="action-btn" onclick="cancelCreateAlbum()">Cancel</button>
-     <button class="action-btn" onclick="confirmSongSelection()">Confirm Selection</button>
+    <div class="popup review-popup" id="reviewPopup">
+        <h3>Deposit Submitted</h3>
+        <p>Wait for review in less than 24 hours. It will be added to your balance. Contact: gnace@gmail.com</p>
+        <button onclick="closePopup('reviewPopup')">OK</button>
     </div>
 
-    <!-- Song Selection Screen -->
-    <div class="song-selection" id="song-selection" style="display: none;">
-     <div class="distributor-header">
-      <img src="https://i.ibb.co/HTMQ32pV/back-arrow-icon.png" alt="Back" class="back-btn" onclick="backToCreateAlbum()">
-      <h2>Select Songs for Album</h2>
-     </div>
-     <div id="unreleased-songs-list"></div>
+    <div class="popup" id="withdrawPopup">
+        <h3>Withdraw Funds</h3>
+        <p>Enter amount to withdraw and your crypto wallet address:</p>
+        <input type="number" placeholder="Amount (e.g., 50)" id="withdrawAmount" min="1">
+        <input type="text" placeholder="Crypto Wallet Address" id="withdrawWallet">
+        <button onclick="confirmWithdraw()">Send</button>
     </div>
 
-    <!-- Album Genre Selection -->
-    <div class="album-genre-selection" id="album-genre-selection" style="display: none;">
-     <div class="distributor-header">
-      <img src="https://i.ibb.co/HTMQ32pV/back-arrow-icon.png" alt="Back" class="back-btn" onclick="cancelAlbumGenre()">
-      <h2>Select Album Genre</h2>
-     </div>
-     <div class="creation-section">
-      <label for="album-genre">Select Genre:</label>
-      <select id="album-genre">
-       <option value="Pop">Pop</option>
-       <option value="Rock">Rock</option>
-       <option value="Hip-Hop">Hip-Hop</option>
-       <option value="Electronic">Electronic</option>
-       <option value="R&amp;B">R&amp;B</option>
-       <option value="Jazz">Jazz</option>
-       <option value="Country">Country</option>
-       <option value="Classical">Classical</option>
-       <option value="Reggae">Reggae</option>
-       <option value="Metal">Metal</option>
-       <option value="Indie">Indie</option>
-       <option value="Folk">Folk</option>
-      </select>
-     </div>
-     <button class="action-btn" onclick="cancelAlbumGenre()">Cancel</button>
-     <button class="action-btn" onclick="confirmCreateAlbum()">Confirm</button>
+    <div class="popup withdraw-review-popup" id="withdrawReviewPopup">
+        <h3>Withdrawal Submitted</h3>
+        <p>It has been withdrawn successfully. Wait for review in 24hrs. If not, contact gnace@gmail.com</p>
+        <button onclick="closePopup('withdrawReviewPopup')">OK</button>
     </div>
 
-    <!-- Unreleased Screen -->
-    <div class="unreleased-screen" id="unreleased-screen" style="display: none;">
-     <div class="distributor-header">
-      <img src="https://i.ibb.co/HTMQ32pV/back-arrow-icon.png" alt="Back" class="back-btn" onclick="backToDistributorOptions()">
-      <h2>Unreleased Content</h2>
-     </div>
-     <div id="unreleased-list"></div>
+    <div class="popup" id="loginPopup">
+        <h3>Login</h3>
+        <input type="email" placeholder="Email Address" id="loginEmail" required>
+        <input type="password" placeholder="Password" id="loginPassword" required>
+        <button onclick="login()">Login</button>
     </div>
 
-    <!-- Released Screen -->
-    <div class="unreleased-screen" id="released-screen" style="display: none;">
-     <div class="distributor-header">
-      <img src="https://i.ibb.co/HTMQ32pV/back-arrow-icon.png" alt="Back" class="back-btn" onclick="backToDistributorOptions()">
-      <h2>Released Content</h2>
-     </div>
-     <div id="released-list"></div>
+    <div class="popup" id="bonusPopup">
+        <h3>Enter Wallet Address</h3>
+        <p>Provide your crypto wallet address to receive your $1,000 bonus. Requires a $50 deposit to withdraw.</p>
+        <input type="text" placeholder="Crypto Wallet Address" id="bonusWallet">
+        <button onclick="sendBonus()">Send</button>
     </div>
 
-    <div class="notification-bar">
-     <div class="nav-item">
-      <img src="https://i.ibb.co/9kZfKJDj/images.png" alt="Home" class="nav-icon" onclick="showScreen('home-screen'); updateHomeScreen();">
-      <span class="nav-label">Home</span>
-     </div>
-     <div class="nav-item">
-      <img src="https://i.ibb.co/s9Nn2xTv/images-1.png" alt="Distributor" class="nav-icon" onclick="showScreen('distributor-screen')">
-      <span class="nav-label">Distributor</span>
-     </div>
-     <div class="nav-item">
-      <img src="https://i.ibb.co/pvX82tgF/download.png" alt="Social" class="nav-icon" onclick="showScreen('social-screen')">
-      <span class="nav-label">Social</span>
-     </div>
-     <div class="nav-item">
-      <img src="https://i.ibb.co/wFnRn5VF/download-1.png" alt="Activity" class="nav-icon" onclick="showScreen('activity-screen')">
-      <span class="nav-label">Activity</span>
-     </div>
-     <div class="nav-item">
-      <img src="https://i.ibb.co/7d0mnm9C/download-2.png" alt="Others" class="nav-icon" onclick="alert('Others clicked!')">
-      <span class="nav-label">Others</span>
-     </div>
+    <div class="popup" id="portfolioPopup">
+        <h3>Portfolio Tracking</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Asset</th>
+                    <th>Amount</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody id="portfolioTable">
+                <tr>
+                    <td>BNB</td>
+                    <td>0</td>
+                    <td>$0</td>
+                </tr>
+                <tr>
+                    <td>PI</td>
+                    <td>0</td>
+                    <td>$0</td>
+                </tr>
+                <tr>
+                    <td>USDT</td>
+                    <td>0</td>
+                    <td>$0</td>
+                </tr>
+            </tbody>
+        </table>
+        <button onclick="closePopup('portfolioPopup')">Close</button>
     </div>
-   </div>
 
-   <!-- Activity Screen -->
-   <div class="screen activity-screen" id="activity-screen">
-    <div class="distributor-header">
-     <img src="https://i.ibb.co/HTMQ32pV/back-arrow-icon.png" alt="Back" class="back-btn" onclick="showScreen('social-platforms')">
-     <h2>Activity</h2>
+    <div class="popup" id="tradingHistoryPopup">
+        <h3>Trading History</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Action</th>
+                    <th>Asset</th>
+                    <th>Amount</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody id="tradingHistoryTable">
+                <!-- Populated by JavaScript -->
+            </tbody>
+        </table>
+        <button onclick="closePopup('tradingHistoryPopup')">Close</button>
     </div>
-    <div class="activity-section">
-     <h2>Jobs</h2>
-     <div id="current-job" style="display: none;">
-      <p>Current Job: <span id="current-job-name">None</span></p>
-      <button class="action-btn" onclick="quitJob()">Quit Job</button>
-     </div>
-     <div id="job-list">
-      <div class="job-item" onclick="applyForJob('Car Wash Attendant', 300)">
-       <span class="job-name">Car Wash Attendant</span>
-       <p>$300 per week</p>
-      </div>
-      <div class="job-item" onclick="applyForJob('Babysitter', 400)">
-       <span class="job-name">Babysitter</span>
-       <p>$400 per week</p>
-      </div>
-      <div class="job-item" onclick="applyForJob('Lawn Care Worker', 350)">
-       <span class="job-name">Lawn Care Worker</span>
-       <p>$350 per week</p>
-      </div>
-      <div class="job-item" onclick="applyForJob('Housekeeper', 400)">
-       <span class="job-name">Housekeeper</span>
-       <p>$400 per week</p>
-      </div>
-      <div class="job-item" onclick="applyForJob('Pet Sitter', 300)">
-       <span class="job-name">Pet Sitter</span>
-       <p>$300 per week</p>
-      </div>
-      <div class="job-item" onclick="applyForJob('Tutor', 400)">
-       <span class="job-name">Tutor</span>
-       <p>$400 per week</p>
-      </div>
-      <div class="job-item" onclick="applyForJob('Food Delivery Driver', 500)">
-       <span class="job-name">Food Delivery Driver</span>
-       <p>$500 per week</p>
-      </div>
-      <div class="job-item" onclick="applyForJob('Retail Sales Associate', 400)">
-       <span class="job-name">Retail Sales Associate</span>
-       <p>$400 per week</p>
-      </div>
-      <div class="job-item" onclick="applyForJob('Cleaning Service Worker', 600)">
-       <span class="job-name">Cleaning Service Worker</span>
-       <p>$600 per week</p>
-      </div>
-      <div class="job-item" onclick="applyForJob('Handyman', 500)">
-       <span class="job-name">Handyman</span>
-       <p>$500 per week</p>
-      </div>
-     </div>
+
+    <div class="popup" id="priceAlertPopup">
+        <h3>Set Price Alert</h3>
+        <select id="alertCoin">
+            <option value="BNB">BNB</option>
+            <option value="PI">PI</option>
+            <option value="USDT">USDT</option>
+        </select>
+        <input type="number" placeholder="Target Price (e.g., 650)" id="alertPrice" min="0">
+        <button onclick="setPriceAlert()">Set Alert</button>
+        <button onclick="closePopup('priceAlertPopup')">Close</button>
     </div>
-    <div class="activity-section">
-     <h2>Events</h2>
-     <div id="event-list">
-      <!-- Events will be populated dynamically -->
-     </div>
-    </div>
-    <div class="notification-bar">
-     <div class="nav-item">
-      <img src="https://i.ibb.co/9kZfKJDj/images.png" alt="Home" class="nav-icon" onclick="showScreen('home-screen'); updateHomeScreen();">
-      <span class="nav-label">Home</span>
-     </div>
-     <div class="nav-item">
-      <img src="https://i.ibb.co/s9Nn2xTv/images-1.png" alt="Distributor" class="nav-icon" onclick="showScreen('distributor-screen')">
-      <span class="nav-label">Distributor</span>
-     </div>
-     <div class="nav-item">
-      <img src="https://i.ibb.co/pvX82tgF/download.png" alt="Social" class="nav-icon" onclick="showScreen('social-screen')">
-      <span class="nav-label">Social</span>
-     </div>
-     <div class="nav-item">
-      <img src="https://i.ibb.co/wFnRn5VF/download-1.png" alt="Activity" class="nav-icon" onclick="showScreen('activity-screen')">
-      <span class="nav-label">Activity</span>
-     </div>
-     <div class="nav-item">
-      <img src="https://i.ibb.co/7d0mnm9C/download-2.png" alt="Others" class="nav-icon" onclick="alert('Others clicked!')">
-      <span class="nav-label">Others</span>
-     </div>
-    </div>
-   </div>
-  </div> 
-  <script src="script.js"></script> 
- 
-<script type="text/javascript" id="dcoder_script">// Game data for each save slot
-let saveSlots = {
-    1: null,
-    2: null,
-    3: null,
-    4: null,
-    5: null
-};
 
-let currentSlot = null;
+    <section class="features" id="features">
+        <h2>Why Choose GNace?</h2>
+        <div class="feature-grid">
+            <div class="feature">
+                <h3>Free Signup</h3>
+                <p>Join without any costs, with optional bonuses.</p>
+            </div>
+            <div class="feature">
+                <h3>Secure Platform</h3>
+                <p>Encryption and cold storage for your funds.</p>
+            </div>
+            <div class="feature">
+                <h3>Easy Verification</h3>
+                <p>Verify your account with a wallet address.</p>
+            </div>
+            <div class="feature">
+                <h3>Exclusive Bonuses</h3>
+                <p>Claim rewards like the $1,000 bonus after a $50 deposit.</p>
+            </div>
+        </div>
+    </section>
 
-let gameData = {
-    artistName: '',
-    genre: '',
-    gender: '',
-    age: '',
-    startingAge: '',
-    country: '',
-    yearStarted: '',
-    artistImage: '',
-    fameLevel: 0,
-    money: 100,
-    energy: 100,
-    currentDate: null,
-    monthlyListeners: 0,
-    followers: 0,
-    selectedDistributor: null,
-    unreleasedSongs: [],
-    releasedSongs: [],
-    unreleasedAlbums: [],
-    releasedAlbums: [],
-    currentJob: null,
-    weeklyEvents: [],
-    eventsParticipated: 0,
-    lastReleaseWeek: null,
-    lastEventWeek: null
-};
+    <section class="legal" id="legal">
+        <h2>Legal Notice</h2>
+        <p>GNace is a demo platform for cryptocurrency trading. Bonuses and rewards are subject to verification and a minimum $50 deposit for withdrawals. Contact support@gnace.com for inquiries.</p>
+        <p>Risk Warning: Cryptocurrency trading and investments carry high risk. GNace does not guarantee returns. Verify all wallet addresses before transactions.</p>
+    </section>
 
-// List of 50 events
-const eventsList = [
-    { name: "TikTok", energyCost: 10, moneyCost: 0, fameIncrease: 0.5 },
-    { name: "TV Pro", energyCost: 0, moneyCost: 100, fameIncrease: 0.6 },
-    { name: "Instagram Post", energyCost: 5, moneyCost: 0, fameIncrease: 0.3 },
-    { name: "Podcast Guest", energyCost: 0, moneyCost: 50, fameIncrease: 0.4 },
-    { name: "YouTube Video", energyCost: 20, moneyCost: 0, fameIncrease: 1.0 },
-    { name: "Radio Interview", energyCost: 0, moneyCost: 20, fameIncrease: 0.2 },
-    { name: "Fashion Show", energyCost: 15, moneyCost: 0, fameIncrease: 0.8 },
-    { name: "Charity Event", energyCost: 0, moneyCost: 150, fameIncrease: 1.2 },
-    { name: "Book Signing", energyCost: 0, moneyCost: 30, fameIncrease: 0.5 },
-    { name: "Concert Performance", energyCost: 25, moneyCost: 0, fameIncrease: 1.5 },
-    { name: "TV Commercial", energyCost: 0, moneyCost: 200, fameIncrease: 1.0 },
-    { name: "Sports Event", energyCost: 12, moneyCost: 0, fameIncrease: 0.6 },
-    { name: "Art Exhibition", energyCost: 0, moneyCost: 100, fameIncrease: 0.8 },
-    { name: "Talk Show", energyCost: 0, moneyCost: 80, fameIncrease: 0.7 },
-    { name: "Music Festival", energyCost: 20, moneyCost: 0, fameIncrease: 1.2 },
-    { name: "Awards Ceremony", energyCost: 0, moneyCost: 250, fameIncrease: 1.5 },
-    { name: "Fashion Magazine", energyCost: 0, moneyCost: 50, fameIncrease: 0.4 },
-    { name: "Celebrity Interview", energyCost: 0, moneyCost: 150, fameIncrease: 1.0 },
-    { name: "Red Carpet Event", energyCost: 0, moneyCost: 300, fameIncrease: 2.0 },
-    { name: "Product Endorsement", energyCost: 0, moneyCost: 200, fameIncrease: 1.2 },
-    { name: "Social Media Challenge", energyCost: 8, moneyCost: 0, fameIncrease: 0.4 },
-    { name: "Gaming Tournament", energyCost: 15, moneyCost: 0, fameIncrease: 0.8 },
-    { name: "Reality TV Show", energyCost: 0, moneyCost: 100, fameIncrease: 0.8 },
-    { name: "Music Video", energyCost: 18, moneyCost: 0, fameIncrease: 1.0 },
-    { name: "Fashion Brand Ambassador", energyCost: 0, moneyCost: 250, fameIncrease: 1.5 },
-    { name: "Philanthropic Donation", energyCost: 0, moneyCost: 500, fameIncrease: 2.5 },
-    { name: "Exclusive Interview", energyCost: 0, moneyCost: 200, fameIncrease: 1.2 },
-    { name: "VIP Party", energyCost: 0, moneyCost: 300, fameIncrease: 2.0 },
-    { name: "Fashion Photoshoot", energyCost: 0, moneyCost: 150, fameIncrease: 0.9 },
-    { name: "TV Show Appearance", energyCost: 0, moneyCost: 100, fameIncrease: 0.7 },
-    { name: "Radio Show Host", energyCost: 0, moneyCost: 50, fameIncrease: 0.4 },
-    { name: "Podcast Host", energyCost: 0, moneyCost: 20, fameIncrease: 0.2 },
-    { name: "YouTube Live Stream", energyCost: 12, moneyCost: 0, fameIncrease: 0.6 },
-    { name: "Gaming Live Stream", energyCost: 10, moneyCost: 0, fameIncrease: 0.5 },
-    { name: "Social Media Contest", energyCost: 5, moneyCost: 0, fameIncrease: 0.3 },
-    { name: "Fashion Contest", energyCost: 0, moneyCost: 20, fameIncrease: 0.2 },
-    { name: "Talent Show", energyCost: 0, moneyCost: 50, fameIncrease: 0.4 },
-    { name: "Music Competition", energyCost: 0, moneyCost: 100, fameIncrease: 0.7 },
-    { name: "Dance Competition", energyCost: 0, moneyCost: 80, fameIncrease: 0.6 },
-    { name: "Acting Audition", energyCost: 0, moneyCost: 30, fameIncrease: 0.3 },
-    { name: "Modeling Audition", energyCost: 0, moneyCost: 20, fameIncrease: 0.2 },
-    { name: "Singing Audition", energyCost: 0, moneyCost: 50, fameIncrease: 0.4 },
-    { name: "TV Show Audition", energyCost: 0, moneyCost: 100, fameIncrease: 0.7 },
-    { name: "Movie Audition", energyCost: 0, moneyCost: 200, fameIncrease: 1.0 },
-    { name: "Fashion Show Audition", energyCost: 0, moneyCost: 150, fameIncrease: 0.9 },
-    { name: "Commercial Audition", energyCost: 0, moneyCost: 50, fameIncrease: 0.4 },
-    { name: "Theater Audition", energyCost: 0, moneyCost: 30, fameIncrease: 0.3 },
-    { name: "Music Festival Audition", energyCost: 0, moneyCost: 100, fameIncrease: 0.7 },
-    { name: "Gaming Tournament Audition", energyCost: 0, moneyCost: 50, fameIncrease: 0.4 },
-    { name: "Reality TV Show Audition", energyCost: 0, moneyCost: 200, fameIncrease: 1.0 }
-];
+    <footer>
+        <p>© 2025 GNace. All rights reserved.</p>
+    </footer>
 
-// Studio budget options
-const studioBudgets = {
-    'small-pro': 500,
-    'city-dj': 1000,
-    'high-man': 10000,
-    'sign-cleb': 100000,
-    'mlj-pro': 1000000
-};
+    <script src="script.js"></script>
 
-// Show main menu on first load
-showScreen('main-menu');
-loadSaveSlots();
+<script type="text/javascript" id="dcoder_script">// Particle Background
+const canvas = document.getElementById('particleCanvas');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 
-// Load save slots from localStorage
-function loadSaveSlots() {
-    for (let i = 1; i <= 5; i++) {
-        const savedData = localStorage.getItem(`musicianGameData_slot${i}`);
-        if (savedData) {
-            saveSlots[i] = JSON.parse(savedData);
-            const slotElement = document.querySelector(`.save-slot:nth-child(${i})`);
-            slotElement.textContent = saveSlots[i].artistName || `Save Slot ${i}`;
+const particles = [];
+const particleCount = 100;
+
+class Particle {
+    constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 5 + 1;
+        this.speedX = Math.random() * 3 - 1.5;
+        this.speedY = Math.random() * 3 - 1.5;
+    }
+
+    update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        if (this.size > 0.2) this.size -= 0.1;
+        if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+        if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+    }
+
+    draw() {
+        ctx.fillStyle = '#d3d3d3'; /* Light gray particles */
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+    }
+}
+
+function initParticles() {
+    for (let i = 0; i < particleCount; i++) {
+        particles.push(new Particle());
+    }
+}
+
+function animateParticles() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach((particle, index) => {
+        particle.update();
+        particle.draw();
+        if (particle.size <= 0.2) {
+            particles.splice(index, 1);
+            particles.push(new Particle());
         }
-    }
+    });
+    requestAnimationFrame(animateParticles);
 }
 
-// Select a save slot
-function selectSaveSlot(slot) {
-    currentSlot = slot;
-    const savedData = saveSlots[slot];
-    if (savedData) {
-        gameData = {
-            ...savedData,
-            currentDate: new Date(savedData.currentDate)
-        };
-        showScreen('social-platforms');
-        updateSocialPlatforms();
-    } else {
-        gameData = {
-            artistName: '',
-            genre: '',
-            gender: '',
-            age: '',
-            startingAge: '',
-            country: '',
-            yearStarted: '',
-            artistImage: '',
-            fameLevel: 0,
-            money: 100,
-            energy: 100,
-            currentDate: null,
-            monthlyListeners: 0,
-            followers: 0,
-            selectedDistributor: null,
-            unreleasedSongs: [],
-            releasedSongs: [],
-            unreleasedAlbums: [],
-            releasedAlbums: [],
-            currentJob: null,
-            weeklyEvents: [],
-            eventsParticipated: 0,
-            lastReleaseWeek: null,
-            lastEventWeek: null
-        };
-        showScreen('character-creation');
-    }
-}
+initParticles();
+animateParticles();
 
-// Populate Year Started dropdown (1999 to 2025)
-const yearStartedSelect = document.getElementById('year-started');
-for (let year = 1999; year <= 2025; year++) {
-    const option = document.createElement('option');
-    option.value = year;
-    option.textContent = year;
-    yearStartedSelect.appendChild(option);
-}
-
-// Preview profile picture
-document.getElementById('artist-upload').addEventListener('change', function(event) {
-    const file = event.target.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            document.getElementById('artist-img-preview').src = e.target.result;
-        };
-        reader.readAsDataURL(file);
-    }
+window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 });
 
-// Preview song image
-function previewSongImage() {
-    const file = document.getElementById('song-photo').files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            document.getElementById('song-img-preview').src = e.target.result;
-        };
-        reader.readAsDataURL(file);
+// Load from localStorage on page load
+let balance = parseFloat(localStorage.getItem('balance')) || 0;
+let hasDeposited50 = localStorage.getItem('hasDeposited50') === 'true';
+let dailyReturns = parseFloat(localStorage.getItem('dailyReturns')) || 0;
+let portfolio = JSON.parse(localStorage.getItem('portfolio')) || { BNB: 0, PI: 0, USDT: 0 };
+const prices = { BNB: 600, PI: 1.07, USDT: 1 };
+let tradingHistory = JSON.parse(localStorage.getItem('tradingHistory')) || [];
+let lastReturnTime = localStorage.getItem('lastReturnTime') || null;
+let walletAddress = localStorage.getItem('walletAddress') || null;
+let userDetails = JSON.parse(localStorage.getItem('userDetails')) || { name: '', email: '', password: '' };
+
+document.getElementById('balance').textContent = `Balance: $${balance}`;
+document.getElementById('currentAddress').textContent = `Current Address: ${walletAddress || 'None'}`;
+if (walletAddress) document.getElementById('accountStatus').textContent = 'Account Status: Verified';
+
+// Load signup details if available
+if (userDetails.name && userDetails.email) {
+    document.getElementById('profileName').textContent = `Name: ${userDetails.name}`;
+    document.getElementById('profileEmail').textContent = `Email: ${userDetails.email}`;
+    document.getElementById('name').value = userDetails.name;
+    document.getElementById('email').value = userDetails.email;
+    document.getElementById('password').value = userDetails.password;
+}
+
+// Dashboard Functions
+function showDashboard() {
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    if (name && email && password) {
+        userDetails = { name, email, password };
+        document.getElementById('hero').style.display = 'none';
+        document.getElementById('marketData').style.display = 'none';
+        document.getElementById('features').style.display = 'none';
+        document.getElementById('legal').style.display = 'none';
+        document.getElementById('dashboard').style.display = 'block';
+        document.getElementById('profileName').textContent = `Name: ${name}`;
+        document.getElementById('profileEmail').textContent = `Email: ${email}`;
+        alert('Welcome to your GNace Dashboard!');
+        saveToLocalStorage();
+    } else {
+        alert('Please fill out all fields.');
     }
 }
 
-// Preview album image
-function previewAlbumImage() {
-    const file = document.getElementById('album-photo').files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            document.getElementById('album-img-preview').src = e.target.result;
-        };
-        reader.readAsDataURL(file);
+function verifyAccount() {
+    const wallet = document.getElementById('verifyWallet').value;
+    if (wallet) {
+        walletAddress = wallet;
+        document.getElementById('accountStatus').textContent = 'Account Status: Verified';
+        document.getElementById('currentAddress').textContent = `Current Address: ${walletAddress}`;
+        document.getElementById('verifyWallet').value = '';
+        saveToLocalStorage();
+    } else {
+        alert('Please enter a wallet address to verify your account.');
     }
 }
 
-// Save character data
-function saveCharacter() {
-    const artistName = document.getElementById('artist-name').value.trim();
-    const genre = document.getElementById('music-genre').value;
-    const gender = document.getElementById('gender').value;
-    const age = parseInt(document.getElementById('age').value);
-    const country = document.getElementById('country').value;
-    const yearStarted = parseInt(document.getElementById('year-started').value);
-    const artistUpload = document.getElementById('artist-upload');
+function showDepositPopup() {
+    document.getElementById('depositPopup').style.display = 'block';
+}
 
-    if (!artistName) {
-        alert('Please enter an artist name!');
-        return;
-    }
-
-    if (!age || age < 15 || age > 99) {
-        alert('Please enter a valid age between 15 and 99!');
-        return;
-    }
-
-    const currentYear = 2025;
-    const birthYear = currentYear - age;
-    if (yearStarted < 1999 || yearStarted > currentYear) {
-        alert('Year Started must be between 1999 and 2025!');
-        return;
-    }
-    if (yearStarted < birthYear) {
-        alert(`Year Started (${yearStarted}) cannot be before the artist was born (${birthYear})!`);
-        return;
-    }
-    if (yearStarted > birthYear + age) {
-        alert(`Year Started (${yearStarted}) cannot be in the future relative to the artist's age!`);
-        return;
-    }
-
-    gameData.artistName = artistName;
-    gameData.genre = genre;
-    gameData.gender = gender;
-    gameData.age = age;
-    gameData.startingAge = age;
-    gameData.country = country;
-    gameData.yearStarted = yearStarted;
-    gameData.currentDate = new Date(yearStarted, 0, 1);
-
-    if (artistUpload.files[0]) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            gameData.artistImage = e.target.result;
-            saveGame();
-            saveSlots[currentSlot] = { ...gameData };
-            const slotElement = document.querySelector(`.save-slot:nth-child(${currentSlot})`);
-            slotElement.textContent = gameData.artistName;
-            showScreen('social-platforms');
-            updateSocialPlatforms();
-        };
-        reader.readAsDataURL(artistUpload.files[0]);
+function showWallet() {
+    const amount = document.getElementById('depositAmount').value;
+    if (amount && amount > 0) {
+        document.getElementById('depositPopup').style.display = 'none';
+        document.getElementById('walletPopup').style.display = 'block';
+        document.getElementById('depositAmountDisplay').textContent = `$${amount}`;
     } else {
-        saveGame();
-        saveSlots[currentSlot] = { ...gameData };
-        const slotElement = document.querySelector(`.save-slot:nth-child(${currentSlot})`);
-        slotElement.textContent = gameData.artistName;
-        showScreen('social-platforms');
-        updateSocialPlatforms();
+        alert('Please enter a valid deposit amount.');
     }
 }
 
-// Update the character's age based on the current in-game year
-function updateAge() {
-    if (!gameData.currentDate || !gameData.yearStarted || !gameData.startingAge) return;
-    const currentYear = gameData.currentDate.getFullYear();
-    const yearsPassed = currentYear - gameData.yearStarted;
-    gameData.age = gameData.startingAge + yearsPassed;
+function confirmDeposit() {
+    const amount = parseFloat(document.getElementById('depositAmount').value);
+    if (amount >= 50) {
+        hasDeposited50 = true;
+        // Simulate redirect to payment page
+        alert(`Please send $${amount} to wallet address: TQZjDzNyZRuoxTij3JU1ZrAKh3gFMkg1pE. After payment, wait for review. Contact: gnace@gmail.com`);
+    }
+    document.getElementById('walletPopup').style.display = 'none';
+    document.getElementById('depositAmount').value = '';
+    document.getElementById('reviewPopup').style.display = 'block';
+    applyDailyReturns();
+    saveToLocalStorage();
 }
 
-// Update the social platforms screen
-function updateSocialPlatforms() {
-    updateAge();
-    document.getElementById('artist-name-display').textContent = gameData.artistName || 'Artist';
-    document.getElementById('genre-display').textContent = gameData.genre || 'Unknown';
-    document.getElementById('gender-display').textContent = gameData.gender || 'Unknown';
-    document.getElementById('age-display').textContent = gameData.age || 'Unknown';
-    document.getElementById('country-display').textContent = gameData.country || 'Unknown';
-    document.getElementById('year-started-display').textContent = gameData.yearStarted || 'Unknown';
-    const profileImg = document.getElementById('artist-profile-img');
-    if (gameData.artistImage) {
-        profileImg.src = gameData.artistImage;
-    } else {
-        profileImg.src = '';
-    }
-    saveGame();
+function showWithdrawPopup() {
+    document.getElementById('withdrawPopup').style.display = 'block';
 }
 
-// Update the home screen
-function updateHomeScreen() {
-    updateAge();
-    document.getElementById('fame-level').textContent = gameData.fameLevel.toFixed(1) + '%';
-    document.getElementById('money').textContent = gameData.money;
-    document.getElementById('energy').textContent = gameData.energy;
-    document.getElementById('home-artist-name-display').textContent = gameData.artistName || 'Artist';
-    document.getElementById('home-genre-display').textContent = gameData.genre || 'Unknown';
-    document.getElementById('home-gender-display').textContent = gameData.gender || 'Unknown';
-    document.getElementById('home-age-display').textContent = gameData.age || 'Unknown';
-    document.getElementById('home-country-display').textContent = gameData.country || 'Unknown';
-    document.getElementById('home-year-started-display').textContent = gameData.yearStarted || 'Unknown';
-    const homeProfileImg = document.getElementById('home-artist-profile-img');
-    if (gameData.artistImage) {
-        homeProfileImg.src = gameData.artistImage;
-    } else {
-        homeProfileImg.src = '';
-    }
-
-    if (!(gameData.currentDate instanceof Date) || isNaN(gameData.currentDate)) {
-        gameData.currentDate = new Date(gameData.yearStarted, 0, 1);
-    }
-
-    const year = gameData.currentDate.getFullYear();
-    const month = String(gameData.currentDate.getMonth() + 1).padStart(2, '0');
-    const day = String(gameData.currentDate.getDate()).padStart(2, '0');
-    document.getElementById('current-date').textContent = `${year}/${day}/${month}`;
-    saveGame();
-}
-
-// State to track "See More" toggles
-let isPopularExpanded = false;
-let isSongsExpanded = false;
-
-// Update the Spotify screen
-function updateSpotifyScreen() {
-    document.getElementById('spotify-artist-name').textContent = gameData.artistName || 'Artist';
-    const spotifyProfileImg = document.getElementById('spotify-profile-img');
-    if (gameData.artistImage) {
-        spotifyProfileImg.src = gameData.artistImage;
-    } else {
-        spotifyProfileImg.src = '';
-    }
-
-    const aboutArtistImg = document.getElementById('about-artist-img');
-    if (gameData.artistImage) {
-        aboutArtistImg.src = gameData.artistImage;
-    } else {
-        aboutArtistImg.src = '';
-    }
-
-    document.getElementById('spotify-monthly-listeners-header').textContent = `${gameData.monthlyListeners.toLocaleString()} Monthly Listeners`;
-    document.getElementById('spotify-monthly-listeners').textContent = `${gameData.monthlyListeners.toLocaleString()} Monthly Listeners`;
-    document.getElementById('spotify-followers').textContent = `${gameData.followers.toLocaleString()} Followers`;
-
-    const popularReleases = document.getElementById('popular-releases');
-    const latestReleases = document.getElementById('latest-releases');
-    const popularSongs = document.getElementById('popular-songs');
-    const albumsSection = document.getElementById('albums');
-    const seeMorePopularButton = document.getElementById('see-more-popular');
-    const seeMoreSongsButton = document.getElementById('see-more-songs');
-
-    let allSongs = [];
-    gameData.releasedSongs.forEach(song => {
-        allSongs.push({ ...song, albumTitle: null, albumPhoto: null, isFromAlbum: false });
-    });
-
-    gameData.releasedAlbums.forEach(album => {
-        album.songs.forEach(song => {
-            allSongs.push({
-                title: song.title,
-                photo: song.photo,
-                streams: song.streams || 0,
-                albumTitle: album.title,
-                albumPhoto: album.photo,
-                isFromAlbum: true
-            });
-        });
-    });
-
-    // Popular Section (Top 5 trending songs by streams with ranking)
-    if (allSongs.length > 0) {
-        allSongs.sort((a, b) => (b.streams || 0) - (a.streams || 0));
-        popularReleases.innerHTML = '';
-        const songsToShow = isPopularExpanded ? allSongs : allSongs.slice(0, 5);
-        songsToShow.forEach((song, index) => {
-            const songItem = document.createElement('div');
-            songItem.className = 'release-item';
-            const coverSrc = song.isFromAlbum ? song.albumPhoto : song.photo || '';
-            const formattedStreams = song.streams.toLocaleString();
-            songItem.innerHTML = `
-                <span class="release-rank">${index + 1}</span>
-                <img src="${coverSrc}" alt="${song.title} Cover" class="release-cover">
-                <div class="release-info">
-                    <p class="release-title">${song.title}${song.albumTitle ? ` (from ${song.albumTitle})` : ''}</p>
-                    <p class="release-streams">${formattedStreams}</p>
-                </div>
-            `;
-            popularReleases.appendChild(songItem);
-        });
-        if (allSongs.length > 5) {
-            seeMorePopularButton.style.display = 'block';
-            seeMorePopularButton.textContent = isPopularExpanded ? 'See less' : 'See more';
-        } else {
-            seeMorePopularButton.style.display = 'none';
-        }
-    } else {
-        popularReleases.innerHTML = '<p class="empty-text">No popular releases yet.</p>';
-        seeMorePopularButton.style.display = 'none';
-    }
-
-    seeMorePopularButton.onclick = () => {
-        isPopularExpanded = !isPopularExpanded;
-        updateSpotifyScreen();
-    };
-
-    // Latest Releases
-    if (gameData.releasedAlbums.length > 0 || gameData.releasedSongs.length > 0) {
-        latestReleases.innerHTML = '';
-        if (gameData.releasedAlbums.length > 0) {
-            const latestAlbum = gameData.releasedAlbums[gameData.releasedAlbums.length - 1];
-            const albumItem = document.createElement('div');
-            albumItem.className = 'release-item';
-            albumItem.innerHTML = `
-                <img src="${latestAlbum.photo || ''}" alt="${latestAlbum.title} Cover" class="release-cover">
-                <div>
-                    <p>${latestAlbum.title} (Album) - Streams: ${latestAlbum.streams.toLocaleString()}</p>
-                    <ul>
-                        ${latestAlbum.songs.map(song => `<li>${song.title || 'Unknown Song'} - Streams: ${song.streams.toLocaleString()}</li>`).join('')}
-                    </ul>
-                </div>
-            `;
-            latestReleases.appendChild(albumItem);
-        }
-        if (gameData.releasedSongs.length > 0) {
-            const latestSong = gameData.releasedSongs[gameData.releasedSongs.length - 1];
-            const songItem = document.createElement('div');
-            songItem.className = 'release-item';
-            songItem.innerHTML = `
-                <img src="${latestSong.photo || ''}" alt="${latestSong.title} Cover" class="release-cover">
-                <p>${latestSong.title} (Song) - Streams: ${latestSong.streams.toLocaleString()}</p>
-            `;
-            latestReleases.appendChild(songItem);
-        }
-    } else {
-        latestReleases.innerHTML = '<p class="empty-text">No latest releases yet.</p>';
-    }
-
-    // Popular Songs (Top 5 songs by streams with "See More" button)
-    if (allSongs.length > 0) {
-        allSongs.sort((a, b) => (b.streams || 0) - (a.streams || 0));
-        popularSongs.innerHTML = '';
-        const songsToShow = isSongsExpanded ? allSongs : allSongs.slice(0, 5);
-        songsToShow.forEach(song => {
-            const songItem = document.createElement('div');
-            songItem.className = 'release-item';
-            const coverSrc = song.isFromAlbum ? song.albumPhoto : song.photo || '';
-            songItem.innerHTML = `
-                <img src="${coverSrc}" alt="${song.title} Cover" class="release-cover">
-                <p>${song.title}${song.albumTitle ? ` (from ${song.albumTitle})` : ''} - Streams: ${song.streams.toLocaleString()}</p>
-            `;
-            popularSongs.appendChild(songItem);
-        });
-        if (allSongs.length > 5) {
-            seeMoreSongsButton.style.display = 'block';
-            seeMoreSongsButton.textContent = isSongsExpanded ? 'See less' : 'See more';
-        } else {
-            seeMoreSongsButton.style.display = 'none';
-        }
-    } else {
-        popularSongs.innerHTML = '<p class="empty-text">No popular songs yet.</p>';
-        seeMoreSongsButton.style.display = 'none';
-    }
-
-    seeMoreSongsButton.onclick = () => {
-        isSongsExpanded = !isSongsExpanded;
-        updateSpotifyScreen();
-    };
-
-    // Albums Section
-    if (gameData.releasedAlbums.length > 0) {
-        albumsSection.innerHTML = '';
-        gameData.releasedAlbums.forEach(album => {
-            const albumItem = document.createElement('div');
-            albumItem.className = 'release-item';
-            albumItem.innerHTML = `
-                <img src="${album.photo || ''}" alt="${album.title} Cover" class="release-cover">
-                <p>${album.title} - Streams: ${album.streams.toLocaleString()}</p>
-            `;
-            albumsSection.appendChild(albumItem);
-        });
-    } else {
-        albumsSection.innerHTML = '<p class="empty-text">No albums yet.</p>';
-    }
-    saveGame();
-}
-
-// Function to select 3 random events for the week
-function selectWeeklyEvents() {
-    gameData.weeklyEvents = [];
-    const shuffledEvents = eventsList.sort(() => 0.5 - Math.random());
-    gameData.weeklyEvents = shuffledEvents.slice(0, 3);
-}
-
-// Update the Activity screen
-function updateActivityScreen() {
-    const currentJobDiv = document.getElementById('current-job');
-    const currentJobName = document.getElementById('current-job-name');
-    const eventList = document.getElementById('event-list');
-
-    // Update current job
-    if (gameData.currentJob) {
-        currentJobDiv.style.display = 'block';
-        currentJobName.textContent = gameData.currentJob.name;
-    } else {
-        currentJobDiv.style.display = 'none';
-        currentJobName.textContent = 'None';
-    }
-
-    // Update events
-    eventList.innerHTML = '';
-    if (gameData.weeklyEvents.length === 0) {
-        selectWeeklyEvents();
-    }
-
-    gameData.weeklyEvents.forEach((event, index) => {
-        const eventItem = document.createElement('div');
-        eventItem.className = 'event-item';
-        const costText = event.energyCost > 0 ? `-${event.energyCost} Energy` : `-$${event.moneyCost}`;
-        const participateButton = gameData.eventsParticipated >= 3 ? 
-            '<button class="action-btn" disabled>Limit Reached</button>' : 
-            `<button class="action-btn" onclick="participateInEvent(${index})">Participate</button>`;
-        eventItem.innerHTML = `
-            <span class="event-name">${event.name}</span>
-            <p>Cost: ${costText} | Fame: +${event.fameIncrease}</p>
-            ${participateButton}
-        `;
-        eventList.appendChild(eventItem);
-    });
-    saveGame();
-}
-
-// Participate in an event
-function participateInEvent(index) {
-    if (gameData.eventsParticipated >= 3) {
-        alert('You have already participated in 3 events this week. Wait until next week to participate in more.');
-        return;
-    }
-
-    const event = gameData.weeklyEvents[index];
-    if (event.energyCost > 0) {
-        if (gameData.energy < event.energyCost) {
-            alert(`Not enough energy! Need at least ${event.energyCost} energy to participate in ${event.name}.`);
+function confirmWithdraw() {
+    const amount = parseFloat(document.getElementById('withdrawAmount').value);
+    const wallet = document.getElementById('withdrawWallet').value;
+    if (amount && wallet && amount <= balance) {
+        if (!hasDeposited50) {
+            alert('You must deposit at least $50 before you can withdraw.');
+            document.getElementById('withdrawPopup').style.display = 'none';
             return;
         }
-        gameData.energy -= event.energyCost;
+        balance -= amount;
+        document.getElementById('balance').textContent = `Balance: $${balance}`;
+        document.getElementById('withdrawPopup').style.display = 'none';
+        document.getElementById('withdrawAmount').value = '';
+        document.getElementById('withdrawWallet').value = '';
+        document.getElementById('withdrawReviewPopup').style.display = 'block';
+        saveToLocalStorage();
     } else {
-        if (gameData.money < event.moneyCost) {
-            alert(`Not enough money! Need at least $${event.moneyCost} to participate in ${event.name}.`);
-            return;
-        }
-        gameData.money -= event.moneyCost;
+        alert('Invalid amount or insufficient balance. Please enter a valid amount and wallet address.');
     }
-
-    gameData.fameLevel += event.fameIncrease;
-    // Only increase listeners if there are released songs/albums
-    if (gameData.releasedSongs.length > 0 || gameData.releasedAlbums.length > 0) {
-        gameData.monthlyListeners += Math.floor(gameData.monthlyListeners * 0.05) + 100; // Increase listeners by 5% + 100
-    }
-    gameData.eventsParticipated += 1;
-    gameData.lastEventWeek = getCurrentWeekNumber();
-    alert(`You participated in ${event.name}! Fame increased by ${event.fameIncrease}.`);
-
-    // Remove the event after participation
-    gameData.weeklyEvents.splice(index, 1);
-    saveGame();
-    updateActivityScreen();
-    updateHomeScreen();
-    updateSpotifyScreen();
 }
 
-// Apply for a job
-function applyForJob(jobName, salary) {
-    if (gameData.currentJob) {
-        if (confirm(`You are currently employed as a ${gameData.currentJob.name}. Do you want to quit your current job to apply for ${jobName}?`)) {
-            gameData.currentJob = null;
-            gameData.currentJob = { name: jobName, salary: salary };
-            alert(`You have been hired as a ${jobName}! You will earn $${salary} per week.`);
-            saveGame();
-            updateActivityScreen();
-        }
+function showBonusPopup() {
+    const status = document.getElementById('accountStatus').textContent;
+    if (status !== 'Account Status: Verified') {
+        alert('Please verify your account with a wallet address first.');
+        return;
+    }
+    document.getElementById('bonusPopup').style.display = 'block';
+}
+
+function sendBonus() {
+    const wallet = document.getElementById('bonusWallet').value;
+    if (wallet) {
+        balance += 1000;
+        document.getElementById('balance').textContent = `Balance: $${balance}`;
+        alert(`Successfully sent $1,000 to ${wallet}! Check your wallet. Requires a $50 deposit to withdraw.`);
+        document.getElementById('bonusPopup').style.display = 'none';
+        document.getElementById('bonusWallet').value = '';
+        saveToLocalStorage();
     } else {
-        gameData.currentJob = { name: jobName, salary: salary };
-        alert(`You have been hired as a ${jobName}! You will earn $${salary} per week.`);
-        saveGame();
-        updateActivityScreen();
+        alert('Please enter a wallet address.');
     }
 }
 
-// Quit job
-function quitJob() {
-    if (gameData.currentJob) {
-        alert(`You have quit your job as a ${gameData.currentJob.name}.`);
-        gameData.currentJob = null;
-        saveGame();
-        updateActivityScreen();
+function saveWallet() {
+    const wallet = document.getElementById('walletAddress').value;
+    if (wallet) {
+        walletAddress = wallet;
+        document.getElementById('currentAddress').textContent = `Current Address: ${walletAddress}`;
+        saveToLocalStorage();
+    } else {
+        alert('Please enter a wallet address.');
     }
 }
 
-// Show a specific screen
-function showScreen(screenId) {
-    document.querySelectorAll('.screen').forEach(screen => {
-        screen.classList.remove('active');
-    });
-    document.getElementById(screenId).classList.add('active');
-    if (screenId === 'home-screen') {
-        updateHomeScreen();
-    } else if (screenId === 'activity-screen') {
-        updateActivityScreen();
-    }
+function invest(amount) {
+    showDepositPopup();
+    document.getElementById('depositAmount').value = amount;
+    showWallet();
+    const dailyReturn = getDailyReturn(amount);
+    dailyReturns = dailyReturn;
+    applyDailyReturns();
+    saveToLocalStorage();
 }
 
-// Save game data to localStorage
-function saveGame() {
-    if (currentSlot) {
-        const gameDataToSave = { ...gameData, currentDate: gameData.currentDate.toISOString() };
-        localStorage.setItem(`musicianGameData_slot${currentSlot}`, JSON.stringify(gameDataToSave));
-        saveSlots[currentSlot] = gameDataToSave;
-    }
+function getDailyReturn(amount) {
+    const tiers = [
+        { amount: 50, return: 5 },
+        { amount: 100, return: 12 },
+        { amount: 250, return: 30 },
+        { amount: 500, return: 60 },
+        { amount: 1000, return: 125 },
+        { amount: 5000, return: 650 }
+    ];
+    const tier = tiers.find(t => t.amount === amount);
+    return tier ? tier.return : 0;
 }
 
-// Load game data from localStorage
-function loadGame() {
-    if (currentSlot) {
-        const savedData = localStorage.getItem(`musicianGameData_slot${currentSlot}`);
-        if (savedData) {
-            const parsedData = JSON.parse(savedData);
-            gameData = {
-                ...parsedData,
-                currentDate: new Date(parsedData.currentDate)
-            };
-            if (!(gameData.currentDate instanceof Date) || isNaN(gameData.currentDate)) {
-                gameData.currentDate = new Date(gameData.yearStarted, 0, 1);
+function applyDailyReturns() {
+    if (dailyReturns > 0 && !lastReturnTime) {
+        lastReturnTime = new Date().toISOString();
+        saveToLocalStorage();
+    }
+    if (dailyReturns > 0) {
+        const now = new Date();
+        if (lastReturnTime) {
+            const lastTime = new Date(lastReturnTime);
+            const diffMs = now - lastTime;
+            const diffHours = diffMs / (1000 * 60 * 60);
+            if (diffHours >= 24) {
+                balance += dailyReturns;
+                document.getElementById('balance').textContent = `Balance: $${balance}`;
+                alert(`Added $${dailyReturns} to your balance as daily return!`);
+                lastReturnTime = now.toISOString();
+                saveToLocalStorage();
             }
-            showScreen('social-platforms');
-            updateSocialPlatforms();
         }
+        setTimeout(applyDailyReturns, 1000); // Check every second
     }
 }
 
-// Distributor selection
-function selectDistributor(distributor) {
-    const distributorNames = {
-        'onerpm': 'OneRPM',
-        'tunecore': 'TuneCore',
-        'cdbaby': 'CD Baby',
-        'distrokid': 'DistroKid',
-        'dittomusic': 'Ditto Music'
-    };
-    if (confirm(`Did you agree to use ${distributorNames[distributor]} as your distributor?`)) {
-        gameData.selectedDistributor = distributor;
-        document.getElementById('selected-distributor-name').textContent = `${distributorNames[distributor]} Options`;
-        document.querySelector('.distributor-grid').style.display = 'none';
-        document.getElementById('distributor-options').style.display = 'block';
-        saveGame();
-    }
+function showPortfolio() {
+    const tbody = document.getElementById('portfolioTable');
+    tbody.innerHTML = `
+        <tr>
+            <td>BNB</td>
+            <td>${portfolio.BNB}</td>
+            <td>$${portfolio.BNB * prices.BNB}</td>
+        </tr>
+        <tr>
+            <td>PI</td>
+            <td>${portfolio.PI}</td>
+            <td>$${portfolio.PI * prices.PI}</td>
+        </tr>
+        <tr>
+            <td>USDT</td>
+            <td>${portfolio.USDT}</td>
+            <td>$${portfolio.USDT * prices.USDT}</td>
+        </tr>
+    `;
+    document.getElementById('portfolioPopup').style.display = 'block';
 }
 
-// Back to distributor grid
-function backToDistributorGrid() {
-    document.querySelector('.distributor-grid').style.display = 'grid';
-    document.getElementById('distributor-options').style.display = 'none';
+function showTradingHistory() {
+    const tbody = document.getElementById('tradingHistoryTable');
+    tbody.innerHTML = tradingHistory.length ? tradingHistory.map(trade => `
+        <tr>
+            <td>${trade.date}</td>
+            <td>${trade.action}</td>
+            <td>${trade.asset}</td>
+            <td>${trade.amount}</td>
+            <td>$${trade.price}</td>
+        </tr>
+    `).join('') : '<tr><td colspan="5">No trades yet.</td></tr>';
+    document.getElementById('tradingHistoryPopup').style.display = 'block';
 }
 
-// Show create song screen
-function showCreateSong() {
-    if (gameData.energy < 10) {
-        alert('Not enough energy! Need at least 10 energy to create a song.');
-        return;
-    }
-    document.getElementById('distributor-options').style.display = 'none';
-    document.getElementById('create-song').style.display = 'block';
+function showPriceAlertPopup() {
+    document.getElementById('priceAlertPopup').style.display = 'block';
 }
 
-// Cancel create song
-function cancelCreateSong() {
-    document.getElementById('create-song').style.display = 'none';
-    document.getElementById('distributor-options').style.display = 'block';
-    document.getElementById('song-img-preview').src = '';
-    document.getElementById('song-title').value = '';
-    document.getElementById('song-genre').value = 'Pop';
-    document.getElementById('studio-budget').value = '';
-}
-
-// Confirm create song
-function confirmCreateSong() {
-    const title = document.getElementById('song-title').value.trim();
-    const genre = document.getElementById('song-genre').value;
-    const studioBudget = document.getElementById('studio-budget').value;
-    const photoInput = document.getElementById('song-photo');
-
-    if (!title) {
-        alert('Please enter a song title!');
-        return;
-    }
-
-    if (!studioBudget) {
-        alert('Please select a studio budget!');
-        return;
-    }
-
-    const studioCost = studioBudgets[studioBudget];
-    if (gameData.money < studioCost) {
-        alert(`Not enough money! Need at least $${studioCost} to record with ${studioBudget.replace('-', ' ')}.`);
-        return;
-    }
-
-    let songPhoto = '';
-    if (photoInput.files[0]) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            songPhoto = e.target.result;
-            const song = { title, genre, photo: songPhoto, studio: studioBudget };
-            gameData.unreleasedSongs.push(song);
-            gameData.energy -= 10;
-            gameData.money -= studioCost;
-            saveGame();
-            cancelCreateSong();
-            updateHomeScreen();
-        };
-        reader.readAsDataURL(photoInput.files[0]);
+function setPriceAlert() {
+    const coin = document.getElementById('alertCoin').value;
+    const targetPrice = parseFloat(document.getElementById('alertPrice').value);
+    if (targetPrice > 0) {
+        alert(`Price alert set for ${coin} at $${targetPrice}.`);
+        setTimeout(() => {
+            alert(`${coin} has reached $${targetPrice}!`);
+        }, 5000); // Simulate alert after 5 seconds
+        document.getElementById('priceAlertPopup').style.display = 'none';
+        document.getElementById('alertPrice').value = '';
     } else {
-        const song = { title, genre, photo: '', studio: studioBudget };
-        gameData.unreleasedSongs.push(song);
-        gameData.energy -= 10;
-        gameData.money -= studioCost;
-        saveGame();
-        cancelCreateSong();
-        updateHomeScreen();
+        alert('Please enter a valid target price.');
     }
 }
 
-// Show create album screen
-function showCreateAlbum() {
-    if (gameData.energy < 50) {
-        alert('Not enough energy! Need at least 50 energy to create an album.');
-        return;
-    }
-    document.getElementById('distributor-options').style.display = 'none';
-    document.getElementById('create-album').style.display = 'block';
+function closePopup(popupId) {
+    document.getElementById(popupId).style.display = 'none';
 }
 
-// Cancel create album
-function cancelCreateAlbum() {
-    document.getElementById('create-album').style.display = 'none';
-    document.getElementById('distributor-options').style.display = 'block';
-    document.getElementById('selected-songs-list').innerHTML = '';
-    document.getElementById('album-img-preview').src = '';
+function showLoginPopup() {
+    document.getElementById('loginPopup').style.display = 'block';
 }
 
-// Show song selection for album
-function showSongSelection() {
-    document.getElementById('create-album').style.display = 'none';
-    document.getElementById('song-selection').style.display = 'block';
-    const songList = document.getElementById('unreleased-songs-list');
-    songList.innerHTML = '';
-    gameData.unreleasedSongs.forEach((song, index) => {
-        const songItem = document.createElement('div');
-        songItem.className = 'unreleased-item';
-        songItem.innerHTML = `
-            <span>${song.title}</span>
-            <button class="action-btn" onclick="selectSongForAlbum(${index})">Select</button>
-        `;
-        songList.appendChild(songItem);
-    });
-}
-
-let selectedSongs = [];
-
-function selectSongForAlbum(index) {
-    if (!selectedSongs.includes(index)) {
-        selectedSongs.push(index);
-        const selectedList = document.getElementById('selected-songs-list');
-        const songItem = document.createElement('div');
-        songItem.innerHTML = gameData.unreleasedSongs[index].title;
-        selectedList.appendChild(songItem);
-    }
-}
-
-// Confirm song selection
-function confirmSongSelection() {
-    if (selectedSongs.length < 8) {
-        alert('Your album needs at least 8 songs!');
-        return;
-    }
-    document.getElementById('song-selection').style.display = 'none';
-    document.getElementById('album-genre-selection').style.display = 'block';
-}
-
-// Cancel album genre selection
-function cancelAlbumGenre() {
-    document.getElementById('album-genre-selection').style.display = 'none';
-    document.getElementById('create-album').style.display = 'block';
-}
-
-// Confirm create album
-function confirmCreateAlbum() {
-    const title = document.getElementById('album-title').value.trim();
-    const genre = document.getElementById('album-genre').value;
-    const photoInput = document.getElementById('album-photo');
-    if (!title) {
-        alert('Please enter an album title!');
-        return;
-    }
-
-    let albumPhoto = '';
-    if (photoInput.files[0]) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            albumPhoto = e.target.result;
-            const albumSongs = selectedSongs.map(index => {
-                const song = gameData.unreleasedSongs[index];
-                return { title: song.title, photo: song.photo, streams: 0 };
-            });
-            const album = { title, genre, photo: albumPhoto, songs: albumSongs, streams: 0 };
-            gameData.unreleasedAlbums.push(album);
-            selectedSongs.sort((a, b) => b - a);
-            selectedSongs.forEach(index => {
-                gameData.unreleasedSongs.splice(index, 1);
-            });
-            gameData.energy -= 50;
-            selectedSongs = [];
-            saveGame();
-            document.getElementById('album-genre-selection').style.display = 'none';
-            document.getElementById('distributor-options').style.display = 'block';
-            updateHomeScreen();
-        };
-        reader.readAsDataURL(photoInput.files[0]);
+function login() {
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
+    if (email && password) {
+        if (email === userDetails.email && password === userDetails.password) {
+            document.getElementById('currentAddress').textContent = `Current Address: ${walletAddress || 'None'}`;
+            document.getElementById('accountStatus').textContent = walletAddress ? 'Account Status: Verified' : 'Account Status: Unverified';
+            document.getElementById('profileName').textContent = `Name: ${userDetails.name}`;
+            document.getElementById('profileEmail').textContent = `Email: ${userDetails.email}`;
+            document.getElementById('loginPopup').style.display = 'none';
+            document.getElementById('loginEmail').value = '';
+            document.getElementById('loginPassword').value = '';
+            showDashboard();
+        } else {
+            alert('Invalid email or password. Please try again.');
+        }
     } else {
-        const albumSongs = selectedSongs.map(index => {
-            const song = gameData.unreleasedSongs[index];
-            return { title: song.title, photo: song.photo, streams: 0 };
-        });
-        const album = { title, genre, photo: '', songs: albumSongs, streams: 0 };
-        gameData.unreleasedAlbums.push(album);
-        selectedSongs.sort((a, b) => b - a);
-        selectedSongs.forEach(index => {
-            gameData.unreleasedSongs.splice(index, 1);
-        });
-        gameData.energy -= 50;
-        selectedSongs = [];
-        saveGame();
-        document.getElementById('album-genre-selection').style.display = 'none';
-        document.getElementById('distributor-options').style.display = 'block';
-        updateHomeScreen();
+        alert('Please enter both email and password.');
     }
 }
 
-// Show unreleased content
-function showUnreleased() {
-    document.getElementById('distributor-options').style.display = 'none';
-    document.getElementById('unreleased-screen').style.display = 'block';
-    const unreleasedList = document.getElementById('unreleased-list');
-    unreleasedList.innerHTML = '';
-
-    gameData.unreleasedSongs.forEach((song, index) => {
-        const songItem = document.createElement('div');
-        songItem.className = 'unreleased-item';
-        songItem.innerHTML = `
-            <span>${song.title} (Song)</span>
-            <div>
-                <button class="action-btn" onclick="publishSong(${index})">Publish</button>
-                <button class="action-btn" onclick="deleteUnreleasedSong(${index})">Delete</button>
-            </div>
-        `;
-        unreleasedList.appendChild(songItem);
-    });
-
-    gameData.unreleasedAlbums.forEach((album, index) => {
-        const albumItem = document.createElement('div');
-        albumItem.className = 'unreleased-item';
-        albumItem.innerHTML = `
-            <span>${album.title} (Album)</span>
-            <div>
-                <button class="action-btn" onclick="publishAlbum(${index})">Publish</button>
-                <button class="action-btn" onclick="deleteUnreleasedAlbum(${index})">Delete</button>
-            </div>
-        `;
-        unreleasedList.appendChild(albumItem);
-    });
-}
-
-// Delete unreleased song
-function deleteUnreleasedSong(index) {
-    gameData.unreleasedSongs.splice(index, 1);
-    saveGame();
-    showUnreleased();
-}
-
-// Delete unreleased album
-function deleteUnreleasedAlbum(index) {
-    gameData.unreleasedAlbums.splice(index, 1);
-    saveGame();
-    showUnreleased();
-}
-
-// Publish song
-function publishSong(index) {
-    const song = gameData.unreleasedSongs.splice(index, 1)[0];
-    song.streams = 0;
-    song.listeners = 0;
-    gameData.releasedSongs.push(song);
-    gameData.fameLevel += 0.1;
-    gameData.monthlyListeners += Math.floor(gameData.monthlyListeners * 0.1) + 500; // Increase listeners by 10% + 500
-    gameData.lastReleaseWeek = getCurrentWeekNumber();
-    saveGame();
-    showUnreleased();
-    updateSpotifyScreen();
-}
-
-// Publish album
-function publishAlbum(index) {
-    const album = gameData.unreleasedAlbums.splice(index, 1)[0];
-    album.streams = 0;
-    album.listeners = 0;
-    album.songs.forEach(song => {
-        if (!song.hasOwnProperty('streams')) {
-            song.streams = 0;
+// Simulate a trade for testing (e.g., buying assets)
+function simulateTrade(action, asset, amount, price) {
+    if (action === 'Buy') {
+        const cost = amount * price;
+        if (cost <= balance) {
+            balance -= cost;
+            portfolio[asset] += amount;
+            tradingHistory.push({
+                date: new Date().toLocaleDateString(),
+                action,
+                asset,
+                amount,
+                price
+            });
+            document.getElementById('balance').textContent = `Balance: $${balance}`;
+            alert(`Bought ${amount} ${asset} at $${price} each!`);
+        } else {
+            alert('Insufficient balance to buy.');
         }
-    });
-    gameData.releasedAlbums.push(album);
-    gameData.fameLevel += 0.1;
-    gameData.monthlyListeners += Math.floor(gameData.monthlyListeners * 0.2) + 1000; // Increase listeners by 20% + 1000
-    gameData.lastReleaseWeek = getCurrentWeekNumber();
-    saveGame();
-    showUnreleased();
-    updateSpotifyScreen();
-}
-
-// Show released content
-function showReleased() {
-    document.getElementById('distributor-options').style.display = 'none';
-    document.getElementById('released-screen').style.display = 'block';
-    const releasedList = document.getElementById('released-list');
-    releasedList.innerHTML = '';
-
-    gameData.releasedSongs.forEach(song => {
-        const songItem = document.createElement('div');
-        songItem.className = 'released-item';
-        songItem.innerHTML = `
-            <span>${song.title} (Song) - Streams: ${song.streams.toLocaleString()}</span>
-        `;
-        releasedList.appendChild(songItem);
-    });
-
-    gameData.releasedAlbums.forEach(album => {
-        const albumItem = document.createElement('div');
-        albumItem.className = 'released-item';
-        albumItem.innerHTML = `
-            <span>${album.title} (Album) - Streams: ${album.streams.toLocaleString()}</span>
-        `;
-        releasedList.appendChild(albumItem);
-    });
-}
-
-// Back to distributor options
-function backToDistributorOptions() {
-    document.getElementById('unreleased-screen').style.display = 'none';
-    document.getElementById('released-screen').style.display = 'none';
-    document.getElementById('distributor-options').style.display = 'block';
-}
-
-// Back to create album
-function backToCreateAlbum() {
-    document.getElementById('song-selection').style.display = 'none';
-    document.getElementById('create-album').style.display = 'block';
-}
-
-// Get current week number since the game started
-function getCurrentWeekNumber() {
-    const startDate = new Date(gameData.yearStarted, 0, 1);
-    const currentDate = new Date(gameData.currentDate);
-    const diffInTime = currentDate - startDate;
-    const diffInDays = diffInTime / (1000 * 3600 * 24);
-    return Math.floor(diffInDays / 7);
-}
-
-// Next week logic with updated mechanics
-function nextWeek() {
-    if (!(gameData.currentDate instanceof Date) || isNaN(gameData.currentDate)) {
-        gameData.currentDate = new Date(gameData.yearStarted, 0, 1);
-    }
-
-    gameData.currentDate.setDate(gameData.currentDate.getDate() + 7);
-    const currentWeek = getCurrentWeekNumber();
-
-    // Update age if a year has passed
-    updateAge();
-
-    // Determine streams based on fame level
-    let songStreamsGained = 0;
-    let albumStreamsGained = 0;
-
-    if (gameData.fameLevel <= 0) {
-        songStreamsGained = Math.floor(Math.random() * (8 - 5 + 1)) + 5;
-        albumStreamsGained = Math.floor(Math.random() * (8 - 5 + 1)) + 5;
-    } else if (gameData.fameLevel <= 10) {
-        songStreamsGained = Math.floor(Math.random() * (10000 - 1000 + 1)) + 1000;
-        albumStreamsGained = Math.floor(Math.random() * (10000 - 1000 + 1)) + 1000;
-    } else if (gameData.fameLevel <= 30) {
-        songStreamsGained = Math.floor(Math.random() * (100000 - 50000 + 1)) + 50000;
-        albumStreamsGained = Math.floor(Math.random() * (100000 - 50000 + 1)) + 50000;
-    } else if (gameData.fameLevel <= 50) {
-        songStreamsGained = Math.floor(Math.random() * (5000000 - 1000000 + 1)) + 1000000;
-        albumStreamsGained = Math.floor(Math.random() * (5000000 - 1000000 + 1)) + 1000000;
-    } else if (gameData.fameLevel <= 100) {
-        songStreamsGained = Math.floor(Math.random() * (5000000000 - 1000000000 + 1)) + 1000000000;
-        albumStreamsGained = Math.floor(Math.random() * (5000000000 - 1000000000 + 1)) + 1000000000;
-    }
-
-    // Increment streams for released songs
-    let totalStreamsGained = 0;
-    gameData.releasedSongs.forEach(song => {
-        song.streams = (song.streams || 0) + songStreamsGained;
-        totalStreamsGained += songStreamsGained;
-    });
-
-    // Increment streams for released albums and their songs
-    gameData.releasedAlbums.forEach(album => {
-        album.streams = (album.streams || 0) + albumStreamsGained;
-        totalStreamsGained += albumStreamsGained;
-
-        album.songs.forEach(song => {
-            const songStreamsGainedIndividual = Math.floor(Math.random() * (songStreamsGained / 2)) + (songStreamsGained / 4);
-            song.streams = (song.streams || 0) + songStreamsGainedIndividual;
-            totalStreamsGained += songStreamsGainedIndividual;
-        });
-    });
-
-    // Update followers based on streams (500k streams = 10k followers)
-    if (totalStreamsGained > 0) {
-        const followersGained = Math.floor(totalStreamsGained / 50000); // 500k streams = 10k followers
-        gameData.followers += followersGained;
-    }
-
-    // Calculate revenue: $0.10 per 1,000 streams
-    const revenuePerThousandStreams = 0.10;
-    const streamRevenue = Math.floor((totalStreamsGained / 1000) * revenuePerThousandStreams);
-    gameData.money += streamRevenue;
-
-    // Apply distributor fees
-    if (gameData.selectedDistributor) {
-        const fees = {
-            'onerpm': 0,
-            'tunecore': 10,
-            'cdbaby': 35,
-            'distrokid': 50,
-            'dittomusic': 100
-        };
-        const fee = fees[gameData.selectedDistributor] || 0;
-        if (gameData.currentDate.getMonth() === 0 && gameData.currentDate.getDate() <= 7) {
-            gameData.money -= fee;
+    } else if (action === 'Sell') {
+        if (portfolio[asset] >= amount) {
+            balance += amount * price;
+            portfolio[asset] -= amount;
+            tradingHistory.push({
+                date: new Date().toLocaleDateString(),
+                action,
+                asset,
+                amount,
+                price
+            });
+            document.getElementById('balance').textContent = `Balance: $${balance}`;
+            alert(`Sold ${amount} ${asset} at $${price} each!`);
+        } else {
+            alert('Insufficient assets to sell.');
         }
     }
+    saveToLocalStorage();
+}
 
-    // Calculate royalties based on streams
-    const totalStreams = gameData.releasedSongs.reduce((sum, song) => sum + (song.streams || 0), 0) +
-                        gameData.releasedAlbums.reduce((sum, album) => sum + (album.streams || 0), 0);
-    const royaltyRates = {
-        'onerpm': 0.3,
-        'tunecore': 0.5,
-        'cdbaby': 0.7,
-        'distrokid': 0.8,
-        'dittomusic': 1.0
-    };
-    const rate = royaltyRates[gameData.selectedDistributor] || 0;
-    const earnings = Math.floor(totalStreams * 0.003 * rate);
-    gameData.money += earnings;
-
-    // Add weekly salary from job
-    if (gameData.currentJob) {
-        gameData.money += gameData.currentJob.salary;
-    }
-
-    // Check if songs are trending (top songs with high streams)
-    let isTrending = false;
-    const allSongs = [];
-    gameData.releasedSongs.forEach(song => allSongs.push(song));
-    gameData.releasedAlbums.forEach(album => album.songs.forEach(song => allSongs.push(song)));
-    if (allSongs.length > 0) {
-        allSongs.sort((a, b) => (b.streams || 0) - (a.streams || 0));
-        const topSong = allSongs[0];
-        if (topSong.streams > 1000000) { // Arbitrary threshold for "trending"
-            isTrending = true;
-        }
-    }
-
-    // Decay listeners if no recent releases (after 3-4 months, i.e., 12-16 weeks)
-    if (gameData.lastReleaseWeek !== null && (currentWeek - gameData.lastReleaseWeek) > 12) {
-        if (!isTrending) {
-            const weeksSinceLastRelease = currentWeek - gameData.lastReleaseWeek;
-            const decayRate = 0.005 * (weeksSinceLastRelease - 12); // 0.5% decay per week after 12 weeks
-            const listenerDecay = Math.floor(gameData.monthlyListeners * decayRate);
-            gameData.monthlyListeners = Math.max(0, gameData.monthlyListeners - listenerDecay);
-        }
-    }
-
-    // Increase listeners if songs are trending
-    if (isTrending) {
-        gameData.monthlyListeners += Math.floor(gameData.monthlyListeners * 0.02) + 100; // Increase by 2% + 100
-    }
-
-    // Decay fame if no recent events (after 5-6 months, i.e., 20-24 weeks)
-    if (gameData.lastEventWeek !== null && (currentWeek - gameData.lastEventWeek) > 20) {
-        const weeksSinceLastEvent = currentWeek - gameData.lastEventWeek;
-        const fameDecayRate = 0.002 * (weeksSinceLastEvent - 20); // 0.2% fame decay per week after 20 weeks
-        const fameDecay = gameData.fameLevel * fameDecayRate;
-        gameData.fameLevel = Math.max(0, gameData.fameLevel - fameDecay);
-    }
-
-    // Reset energy to 100 every week
-    gameData.energy = 100;
-
-    // Reset event participation count and refresh events
-    gameData.eventsParticipated = 0;
-    selectWeeklyEvents();
-
-    saveGame();
-    updateHomeScreen();
-    updateSpotifyScreen();
+function saveToLocalStorage() {
+    localStorage.setItem('balance', balance);
+    localStorage.setItem('hasDeposited50', hasDeposited50);
+    localStorage.setItem('dailyReturns', dailyReturns);
+    localStorage.setItem('portfolio', JSON.stringify(portfolio));
+    localStorage.setItem('tradingHistory', JSON.stringify(tradingHistory));
+    localStorage.setItem('lastReturnTime', lastReturnTime);
+    localStorage.setItem('walletAddress', walletAddress);
+    localStorage.setItem('userDetails', JSON.stringify(userDetails));
 }</script></body></html>
